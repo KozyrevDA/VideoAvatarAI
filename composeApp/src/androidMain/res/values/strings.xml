@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Нейросеть Видео</string>
+    <!-- Заполнить после регистрации приложения в RuStore Console -->
+    <!-- https://console.rustore.ru → Ваше приложение → ID приложения -->
+    <string name="CONSOLE_APPLICATION_ID">YOUR_RUSTORE_APP_ID</string>
+</resources>

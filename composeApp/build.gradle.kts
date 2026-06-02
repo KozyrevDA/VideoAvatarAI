@@ -107,9 +107,15 @@ android {
     dependencies {
         implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
         implementation("com.google.firebase:firebase-analytics")
+        implementation("com.google.firebase:firebase-messaging")
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
-        implementation(platform("ru.rustore.sdk:bom:2025.08.01"))
+
+        // RuStore Pay SDK (актуальный, BillingClient отключается 1 августа 2026)
+        // https://www.rustore.ru/help/sdk/pay/kotlin-java
+        implementation(platform("ru.rustore.sdk:bom:2026.04.01"))
         implementation("ru.rustore.sdk:pay")
+
+        // Google Play Billing (для GP версии)
         implementation("com.android.billingclient:billing-ktx:8.0.0")
     }
 }
