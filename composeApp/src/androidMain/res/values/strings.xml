@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Нейросеть Видео</string>
-    <!-- Заполнить после регистрации приложения в RuStore Console -->
-    <!-- https://console.rustore.ru → Ваше приложение → ID приложения -->
-    <string name="CONSOLE_APPLICATION_ID">YOUR_RUSTORE_APP_ID</string>
+    <!-- RuStore Console Application ID — Key ID от Publisher API = 2351028944 -->
+    <!-- Console App ID берётся из RuStore Console → Приложения → ID приложения -->
+    <!-- Пока используем Key ID как placeholder, замени на реальный Console App ID -->
+    <string name="CONSOLE_APPLICATION_ID">2351028944</string>
 </resources>
