@@ -9,7 +9,7 @@ data class User(
     val email: String = "",
     val tokensCount: Int = 0,
     val isPro: Boolean = false,
-    val subscriptionType: String = "", // "monthly", "yearly"
+    val subscriptionType: String = "",
     val nextPaymentDate: String = "",
     val voiceCloned: Boolean = false,
 )
@@ -17,23 +17,15 @@ data class User(
 @Serializable
 data class VideoItem(
     val id: String = "",
-    val type: VideoType = VideoType.AVATAR,
+    val type: String = "avatar",
     val title: String = "",
     val thumbnailUrl: String = "",
     val videoUrl: String = "",
     val language: String = "ru",
     val platform: String = "instagram",
-    val status: VideoStatus = VideoStatus.PROCESSING,
+    val status: String = "processing",
     val createdAt: String = "",
 )
-
-enum class VideoType {
-    AVATAR, TRANSLATION, TEXT_POST, IDEAS
-}
-
-enum class VideoStatus {
-    PROCESSING, READY, ERROR
-}
 
 @Serializable
 data class GenerateAvatarRequest(
@@ -42,11 +34,10 @@ data class GenerateAvatarRequest(
     val style: AvatarStyle = AvatarStyle.BUSINESS,
     val platform: String = "instagram",
     val language: String = "ru",
+    val voiceId: String? = null,  // Fish Audio reference_id для клонированного голоса
 )
 
-enum class AvatarStyle {
-    BUSINESS, CASUAL, EXPERT
-}
+enum class AvatarStyle { BUSINESS, CASUAL, EXPERT }
 
 @Serializable
 data class GenerateTextPostRequest(
@@ -55,9 +46,7 @@ data class GenerateTextPostRequest(
     val tone: TextTone = TextTone.FRIENDLY,
 )
 
-enum class TextTone {
-    FRIENDLY, EXPERT, FUNNY
-}
+enum class TextTone { FRIENDLY, EXPERT, FUNNY, MOTIVATIONAL }
 
 @Serializable
 data class GenerateIdeasRequest(
@@ -71,28 +60,32 @@ data class TranslateVideoRequest(
     val videoId: String,
     val targetLanguage: String,
     val useClonedVoice: Boolean = true,
+    val sourceText: String = "",
 )
 
 @Serializable
 data class GenerationResult(
     val id: String = "",
+    val taskId: String = "",
     val status: String = "processing",
-    val videoUrl: String = "",
+    val videoUrl: String? = null,
     val progress: Int = 0,
     val message: String = "",
-)
+    val errorMessage: String? = null,
+) {
+    val effectiveId: String get() = id.ifBlank { taskId }
+}
 
 @Serializable
 data class TextPostResult(
     val text: String = "",
     val hashtags: List<String> = emptyList(),
     val platform: String = "",
+    val characterCount: Int = 0,
 )
 
 @Serializable
-data class IdeasResult(
-    val ideas: List<String> = emptyList(),
-)
+data class IdeasResult(val ideas: List<String> = emptyList())
 
 @Serializable
 data class TokenPack(
@@ -106,7 +99,7 @@ data class TokenPack(
 @Serializable
 data class SubscriptionPlan(
     val id: String,
-    val type: String, // "monthly", "yearly"
+    val type: String,
     val price: Int,
     val priceLabel: String,
     val tokensPerMonth: Int,
@@ -128,6 +121,7 @@ val languages = listOf(
     "English", "Español", "中文", "Deutsch", "Français",
     "日本語", "Português", "العربية", "한국어", "Hindi",
     "Turkish", "Italian", "Polish", "Dutch", "Swedish",
+    "Русский", "Українська", "Қазақша",
 )
 
 val platforms = listOf("Instagram", "TikTok", "VK", "YouTube")

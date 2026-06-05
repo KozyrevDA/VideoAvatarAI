@@ -62,7 +62,7 @@ class ResultViewModel(
                             "error" -> {
                                 _uiState.value = _uiState.value.copy(
                                     isGenerating = false,
-                                    error = result.message,
+                                    error = result.errorMessage,
                                 )
                                 return@launch
                             }

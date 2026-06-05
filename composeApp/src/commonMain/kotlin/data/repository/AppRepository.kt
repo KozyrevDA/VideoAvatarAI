@@ -1,6 +1,6 @@
 package data.repository
 
-import data.model.CaptionRequest
+
 import data.model.GenerateAvatarRequest
 import data.model.GenerateIdeasRequest
 import data.model.GenerateTextPostRequest

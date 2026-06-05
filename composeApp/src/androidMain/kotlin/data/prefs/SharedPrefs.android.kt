@@ -1,12 +1,11 @@
 package data.prefs
 
-import android.content.Context
 import android.content.SharedPreferences
+import org.nla.videoavataraii.app.AndroidApp
 
-actual class SharedPrefs(private val context: Context) {
-
+actual class SharedPrefs actual constructor() {
     private val prefs: SharedPreferences by lazy {
-        context.getSharedPreferences("video_avatar_ai_prefs", Context.MODE_PRIVATE)
+        AndroidApp.instance.getSharedPreferences("video_avatar_ai_prefs", android.content.Context.MODE_PRIVATE)
     }
 
     actual fun isFirstOpen(): Boolean = prefs.getBoolean(KEY_IS_FIRST_OPEN, true)

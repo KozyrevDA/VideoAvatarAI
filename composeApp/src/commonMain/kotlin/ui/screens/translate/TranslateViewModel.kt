@@ -59,9 +59,9 @@ class TranslateViewModel(
                 repository.spendToken()
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    resultTaskId = result.id,
+                    resultTaskId = result.effectiveId,
                 )
-                onSuccess(result.id)
+                onSuccess(result.effectiveId)
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

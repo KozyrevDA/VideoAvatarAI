@@ -18,86 +18,78 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+
+@Serializable
+private data class ConfirmPurchaseBody(
+    val productId: String,
+    val purchaseToken: String,
+    val store: String,
+    val userId: String,
+)
 
 class ApiClient(
     private val baseUrl: String,
     private val token: String,
 ) {
-
     private val client = HttpClient {
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            })
+            json(Json { ignoreUnknownKeys = true; isLenient = true })
         }
     }
 
-    suspend fun generateAvatar(request: GenerateAvatarRequest): GenerationResult {
-        return client.post("$baseUrl/api/avatar/generate") {
+    suspend fun generateAvatar(request: GenerateAvatarRequest): GenerationResult =
+        client.post("$baseUrl/api/avatar/generate") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
-    }
 
-    suspend fun checkGenerationStatus(id: String): GenerationResult {
-        return client.get("$baseUrl/api/generation/$id/status") {
+    suspend fun checkGenerationStatus(id: String): GenerationResult =
+        client.get("$baseUrl/api/generation/$id/status") {
             bearerAuth(token)
         }.body()
-    }
 
-    suspend fun generateTextPost(request: GenerateTextPostRequest): TextPostResult {
-        return client.post("$baseUrl/api/text/generate") {
+    suspend fun generateTextPost(request: GenerateTextPostRequest): TextPostResult =
+        client.post("$baseUrl/api/text/generate") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
-    }
 
-    suspend fun generateIdeas(request: GenerateIdeasRequest): IdeasResult {
-        return client.post("$baseUrl/api/ideas/generate") {
+    suspend fun generateIdeas(request: GenerateIdeasRequest): IdeasResult =
+        client.post("$baseUrl/api/ideas/generate") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
-    }
 
-    suspend fun translateVideo(request: TranslateVideoRequest): GenerationResult {
-        return client.post("$baseUrl/api/translate/generate") {
+    suspend fun translateVideo(request: TranslateVideoRequest): GenerationResult =
+        client.post("$baseUrl/api/translate/generate") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
             setBody(request)
         }.body()
-    }
 
-    suspend fun getHistory(): List<VideoItem> {
-        return client.get("$baseUrl/api/history") {
+    suspend fun getHistory(): List<VideoItem> =
+        client.get("$baseUrl/api/history") {
             bearerAuth(token)
         }.body()
-    }
 
-    suspend fun getVideo(id: String): VideoItem {
-        return client.get("$baseUrl/api/video/$id") {
+    suspend fun confirmPurchase(
+        productId: String,
+        purchaseToken: String,
+        store: String,
+        userId: String,
+    ): Boolean = try {
+        client.post("$baseUrl/api/billing/confirm") {
             bearerAuth(token)
-        }.body()
-    }
-
-    suspend fun confirmPurchase(productId: String, purchaseToken: String, store: String): Boolean {
-        return try {
-            client.post("$baseUrl/api/billing/confirm") {
-                bearerAuth(token)
-                contentType(ContentType.Application.Json)
-                setBody(mapOf(
-                    "productId" to productId,
-                    "purchaseToken" to purchaseToken,
-                    "store" to store
-                ))
-            }
-            true
-        } catch (e: Exception) {
-            false
+            contentType(ContentType.Application.Json)
+            setBody(ConfirmPurchaseBody(productId, purchaseToken, store, userId))
         }
+        true
+    } catch (e: Exception) {
+        false
     }
 }

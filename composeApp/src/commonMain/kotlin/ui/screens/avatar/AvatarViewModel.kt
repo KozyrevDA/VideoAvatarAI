@@ -77,9 +77,9 @@ class AvatarViewModel(
                 repository.spendToken()
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    generatedTaskId = result.id,
+                    generatedTaskId = result.effectiveId,
                 )
-                onSuccess(result.id)
+                onSuccess(result.effectiveId)
             }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
