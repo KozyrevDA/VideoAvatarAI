@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Для shareVideo и shareToInstagramStories через FileProvider -->
+    <cache-path name="shared_videos" path="." />
+    <external-path name="external_files" path="." />
+</paths>

@@ -13,6 +13,12 @@
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
 
+    <!-- Instagram Stories требует явного указания пакетов -->
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.zhiliaoapp.musically" />
+    </queries>
+
     <application
         android:name="org.nla.videoavataraii.app.AndroidApp"
         android:allowBackup="false"
@@ -52,6 +58,17 @@
             </intent-filter>
 
         </activity>
+
+        <!-- FileProvider для шаринга видео через Intent (Instagram, TikTok, ShareSheet) -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 
