@@ -91,6 +91,8 @@ fun OnboardingScreen(
                 3 -> PhotoStep(
                     onNext = { navigationActions.navigateToPaywall("onboarding") },
                     onSkip = { navigationActions.navigateToPaywall("onboarding") },
+                    showImagePicker = showImagePicker,
+                    photoSelected = photoSelected,
                 )
             }
             Spacer(Modifier.height(32.dp))

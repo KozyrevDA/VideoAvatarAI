@@ -1,5 +1,6 @@
 package di
 
+import app.Constants
 import data.network.ApiClient
 import data.prefs.SharedPrefs
 import data.repository.AppRepository
@@ -27,7 +28,7 @@ object Koin {
         single { SharedPrefs() }
         single {
             ApiClient(
-                baseUrl = "https://api.videoavataraii.com",
+                baseUrl = app.Constants.BASE_URL,
                 token = get<SharedPrefs>().getAuthToken() ?: "",
             )
         }

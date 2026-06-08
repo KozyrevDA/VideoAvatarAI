@@ -24,8 +24,13 @@ class OnboardingViewModel(
 
     fun setPastOnboarding() {
         viewModelScope.launch {
-            repository.sharedPrefs.setPastOnboarding(true)
-            _isPastOnboarding.value = true
+            try {
+                repository.sharedPrefs.setPastOnboarding(true)
+                _isPastOnboarding.value = true
+            } catch (e: Exception) {
+                // SharedPrefs запись не должна фейлить, но защищаемся
+                _isPastOnboarding.value = true
+            }
         }
     }
 

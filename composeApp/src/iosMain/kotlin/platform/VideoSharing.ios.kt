@@ -52,7 +52,13 @@ actual class VideoSharing {
                     applicationActivities = null,
                 )
 
-                UIApplication.sharedApplication.keyWindow?.rootViewController
+                // iOS 15+ compatible: connectedScenes вместо deprecated keyWindow
+                UIApplication.sharedApplication.connectedScenes
+                    .filterIsInstance<platform.UIKit.UIWindowScene>()
+                    .firstOrNull()
+                    ?.windows
+                    ?.firstOrNull { it.isKeyWindow }
+                    ?.rootViewController
                     ?.presentViewController(controller, animated = true, completion = null)
 
                 ShareResult.Success

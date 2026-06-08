@@ -38,6 +38,7 @@ class ResultViewModel(
         viewModelScope.launch {
             var attempts = 0
             while (attempts < 60) {
+                try {
                 delay(3000)
                 attempts++
                 repository.checkGenerationStatus(videoId)
@@ -68,6 +69,9 @@ class ResultViewModel(
                             }
                         }
                     }
+                } catch (e: Exception) {
+                    // Сетевая ошибка — продолжаем поллинг
+                }
             }
             // Timeout
             _uiState.value = _uiState.value.copy(

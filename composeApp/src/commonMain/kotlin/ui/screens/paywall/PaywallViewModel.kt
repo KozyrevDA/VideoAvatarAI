@@ -11,48 +11,36 @@ data class PaywallUiState(
     val isLoading: Boolean = false,
     val isPurchaseSuccess: Boolean = false,
     val error: String? = null,
-    val selectedPlan: String = "yearly", // "monthly" | "yearly"
+    val selectedPlan: String = "yearly",
 )
 
-class PaywallViewModel(
-    private val repository: AppRepository,
-) : ViewModel() {
+class PaywallViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PaywallUiState())
     val uiState = _uiState.asStateFlow()
-
-    val isPro = repository.isPro
 
     fun selectPlan(plan: String) {
         _uiState.value = _uiState.value.copy(selectedPlan = plan)
     }
 
-    fun purchaseMonthly(activity: Any? = null) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            // TODO: RuStore / Google Play billing
-            // Temporarily simulate success
-            repository.setPro(true)
-            repository.addTokens(5)
-            repository.sharedPrefs.setNotFirstOpen()
-            _uiState.value = _uiState.value.copy(
-                isLoading = false,
-                isPurchaseSuccess = true,
-            )
-        }
-    }
+    fun purchaseMonthly() = purchase("monthly")
+    fun purchaseYearly()  = purchase("yearly")
 
-    fun purchaseYearly(activity: Any? = null) {
+    private fun purchase(type: String) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            // TODO: RuStore / Google Play billing
-            repository.setPro(true)
-            repository.addTokens(5)
-            repository.sharedPrefs.setNotFirstOpen()
-            _uiState.value = _uiState.value.copy(
-                isLoading = false,
-                isPurchaseSuccess = true,
-            )
+            try {
+                _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+                // TODO: подключить RuStore Pay / Google Play Billing
+                repository.setPro(true)
+                repository.addTokens(5)
+                repository.sharedPrefs.setNotFirstOpen()
+                _uiState.value = _uiState.value.copy(isLoading = false, isPurchaseSuccess = true)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Ошибка оплаты",
+                )
+            }
         }
     }
 }

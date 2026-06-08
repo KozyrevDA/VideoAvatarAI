@@ -10,15 +10,12 @@ import kotlinx.coroutines.launch
 data class SettingsUiState(
     val isPro: Boolean = false,
     val tokensCount: Int = 0,
-    val subscriptionType: String = "",
-    val nextPaymentDate: String = "",
     val voiceCloned: Boolean = false,
     val notificationsEnabled: Boolean = true,
+    val error: String? = null,
 )
 
-class SettingsViewModel(
-    private val repository: AppRepository,
-) : ViewModel() {
+class SettingsViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState = _uiState.asStateFlow()
@@ -38,14 +35,18 @@ class SettingsViewModel(
 
     fun toggleNotifications() {
         _uiState.value = _uiState.value.copy(
-            notificationsEnabled = !_uiState.value.notificationsEnabled
+            notificationsEnabled = !_uiState.value.notificationsEnabled,
         )
     }
 
     fun cancelSubscription() {
         viewModelScope.launch {
-            // TODO: cancel via billing SDK
-            repository.setPro(false)
+            try {
+                // TODO: отмена через Billing SDK
+                repository.setPro(false)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = e.message)
+            }
         }
     }
 }
