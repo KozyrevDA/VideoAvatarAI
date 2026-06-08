@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Основные настройки приложения -->
+    <key>CFBundleDisplayName</key>
+    <string>Нейросеть Видео</string>
+    <key>CFBundleIdentifier</key>
+    <string>org.nla.videoavataraii</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+    </array>
+
+    <!-- Разрешения для фотогалереи (ImagePicker) -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Нейросеть Видео использует фото для создания говорящего аватара</string>
+
+    <!-- Разрешение на сохранение в галерею (saveToGallery) -->
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Сохраняем готовое видео в твою галерею</string>
+
+    <!-- Разрешение на микрофон (будущая запись голоса) -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Нейросеть Видео записывает голос для клонирования — твой аватар будет говорить именно им</string>
+
+    <!-- Для Instagram URL scheme -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>instagram</string>
+        <string>instagram-stories</string>
+        <string>tiktok</string>
+    </array>
+
+    <!-- Сетевые разрешения -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <false/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>api.hedra.com</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <false/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+            <key>api.fish.audio</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <false/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+</dict>
+</plist>

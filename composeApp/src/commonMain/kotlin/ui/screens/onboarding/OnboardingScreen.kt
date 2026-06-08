@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.ui.graphics.ImageBitmap
 import ui.components.PrimaryButton
 import ui.components.ProgressStepBar
 import ui.components.SecondaryButton
@@ -118,7 +119,7 @@ private fun SplashStep(onStart: () -> Unit) {
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
             listOf("Apple", "Google", "VK").forEach { p ->
-                Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).background(Surface).clickable {}.padding(vertical = 10.dp), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).background(Surface).clickable { onStart() }.padding(vertical = 10.dp), contentAlignment = Alignment.Center) {
                     Text(p, fontSize = 11.sp, color = OnBackground)
                 }
             }
@@ -169,7 +170,7 @@ private fun PainsStep(selectedPains: List<Int>, onTogglePain: (Int) -> Unit, onN
 }
 
 @Composable
-private fun PhotoStep(onNext: () -> Unit, onSkip: () -> Unit) {
+private fun PhotoStep(onNext: () -> Unit, onSkip: () -> Unit, showImagePicker: androidx.compose.runtime.MutableState<Boolean>, photoSelected: Boolean) {
     Column(modifier = Modifier.fillMaxWidth()) {
         StepIndicator(2, 3, Modifier.fillMaxWidth())
         Spacer(Modifier.height(8.dp))
@@ -180,14 +181,22 @@ private fun PhotoStep(onNext: () -> Unit, onSkip: () -> Unit) {
         Text("Создадим первое видео бесплатно", fontSize = 12.sp, color = TextSecondary)
         Spacer(Modifier.height(14.dp))
         Box(
-            modifier = Modifier.fillMaxWidth().height(120.dp).clip(RoundedCornerShape(18.dp)).background(PrimaryContainer).border(1.5.dp, PrimaryContainerDark, RoundedCornerShape(18.dp)).clickable {},
+            modifier = Modifier.fillMaxWidth().height(120.dp).clip(RoundedCornerShape(18.dp)).background(if (photoSelected) SecondaryContainer else PrimaryContainer).border(1.5.dp, if (photoSelected) Secondary else PrimaryContainerDark, RoundedCornerShape(18.dp)).clickable { showImagePicker.value = true },
             contentAlignment = Alignment.Center,
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("👤", fontSize = 32.sp)
-                Spacer(Modifier.height(6.dp))
-                Text("Загрузи своё фото", fontSize = 12.sp, color = Primary, fontWeight = FontWeight.Medium)
-                Text("чёткий портрет", fontSize = 10.sp, color = TextSecondary)
+            if (photoSelected) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("✅", fontSize = 32.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Text("Фото загружено!", fontSize = 12.sp, color = Secondary, fontWeight = FontWeight.Medium)
+                }
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("👤", fontSize = 32.sp)
+                    Spacer(Modifier.height(6.dp))
+                    Text("Загрузи своё фото", fontSize = 12.sp, color = Primary, fontWeight = FontWeight.Medium)
+                    Text("чёткий портрет", fontSize = 10.sp, color = TextSecondary)
+                }
             }
         }
         Spacer(Modifier.height(12.dp))

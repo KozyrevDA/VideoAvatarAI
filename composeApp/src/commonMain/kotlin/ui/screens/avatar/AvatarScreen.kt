@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import data.model.AvatarStyle
-import androidx.compose.ui.graphics.ImageBitmap
 import org.koin.compose.viewmodel.koinViewModel
 import ui.components.PrimaryButton
 import ui.components.SectionTitle
