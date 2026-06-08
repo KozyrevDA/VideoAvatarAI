@@ -28,6 +28,20 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var showVoiceDialog by remember { mutableStateOf(false) }
+
+    // Voice recording dialog
+    if (showVoiceDialog) {
+        androidx.compose.material3.AlertDialog(
+            onDismissRequest = { showVoiceDialog = false },
+            title = { Text("Клонирование голоса", fontSize = 16.sp, fontWeight = FontWeight.Medium) },
+            text = { Text("Запиши 30–60 секунд своего голоса — аватар будет говорить именно им на любом языке.\n\nДля записи используй любое приложение-диктофон, затем загрузи MP3 файл.", fontSize = 13.sp) },
+            confirmButton = {
+                Text("Понятно", fontSize = 14.sp, color = Primary, fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(8.dp).clickable { showVoiceDialog = false })
+            },
+        )
+    }
 
     Column(modifier = Modifier.fillMaxSize().background(Background).statusBarsPadding()) {
         Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp)) {
@@ -73,7 +87,7 @@ fun SettingsScreen(
                 }
             }
             Divider()
-            SettingsRow("Записать голос", showArrow = true, onClick = {}) {}
+            SettingsRow("Записать голос", showArrow = true, onClick = { showVoiceDialog = true }) {}
 
             Spacer(Modifier.height(8.dp))
             Divider()

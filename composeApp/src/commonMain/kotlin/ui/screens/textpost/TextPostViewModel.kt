@@ -63,3 +63,7 @@ class TextPostViewModel(
         }
     }
 }
+
+    fun clearResult() {
+        _uiState.value = _uiState.value.copy(result = null, error = null)
+    }

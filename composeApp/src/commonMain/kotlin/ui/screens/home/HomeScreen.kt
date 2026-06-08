@@ -124,7 +124,7 @@ fun HomeScreen(
                         HistoryItem("🌍", SecondaryContainer, "Перевод → English", "Вчера · 14:35") {}
                     } else {
                         uiState.recentItems.forEach { item ->
-                            HistoryItem("👤", PrimaryContainer, item.title, item.createdAt) {}
+                            HistoryItem("👤", PrimaryContainer, item.title, item.createdAt) { navigationActions.navigateToResult(item.id) }
                         }
                     }
                 }

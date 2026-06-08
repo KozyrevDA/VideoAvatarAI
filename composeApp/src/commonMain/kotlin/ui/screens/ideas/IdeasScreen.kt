@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import platform.getVideoSharing
 import org.koin.compose.viewmodel.koinViewModel
 import ui.navigation.AppNavigationActions
 import ui.screens.home.BottomNav
@@ -31,6 +32,8 @@ fun IdeasScreen(
     viewModel: IdeasViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val sharing = remember { getVideoSharing() }
+    var toastMessage by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize().background(Background).statusBarsPadding()) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
@@ -60,6 +63,14 @@ fun IdeasScreen(
                 colors = TextFieldDefaults.colors(focusedContainerColor = Surface, unfocusedContainerColor = Surface, focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent),
                 singleLine = true,
             )
+
+            // Toast message
+            toastMessage?.let {
+                Spacer(Modifier.height(6.dp))
+                Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(SecondaryContainer).padding(8.dp)) {
+                    Text(it, fontSize = 11.sp, color = Secondary)
+                }
+            }
             Spacer(Modifier.height(8.dp))
         }
 
@@ -70,9 +81,20 @@ fun IdeasScreen(
         } else if (uiState.ideas.isNotEmpty()) {
             LazyColumn(modifier = Modifier.weight(1f).padding(horizontal = 20.dp)) {
                 itemsIndexed(uiState.ideas) { idx, idea ->
-                    Row(modifier = Modifier.fillMaxWidth().clickable {}.padding(vertical = 8.dp), verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .clickable {
+                                // Нажатие на идею — копируем в буфер
+                                sharing.copyToClipboard(idea)
+                                toastMessage = "✅ Скопировано: ${idea.take(40)}..."
+                            }
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         Text("${idx + 1}", fontSize = 11.sp, fontWeight = FontWeight.Medium, color = Primary, modifier = Modifier.padding(top = 1.dp))
                         Text(idea, fontSize = 12.sp, color = OnBackground, lineHeight = 18.sp, modifier = Modifier.weight(1f))
+                        Text("📋", fontSize = 14.sp)
                     }
                     Box(modifier = Modifier.fillMaxWidth().height(0.5.dp).background(BorderSecondary))
                 }
@@ -89,9 +111,18 @@ fun IdeasScreen(
                 Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(14.dp)).background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(14.dp)).clickable { viewModel.generate() }.padding(vertical = 13.dp), contentAlignment = Alignment.Center) {
                     Text("Обновить", fontSize = 12.sp, color = TextSecondary)
                 }
-            }
-            Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(14.dp)).background(Primary).clickable { viewModel.generate() }.padding(vertical = 13.dp), contentAlignment = Alignment.Center) {
-                Text(if (uiState.ideas.isEmpty()) "Придумать" else "Сохранить все", fontSize = 12.sp, color = Color.White, fontWeight = FontWeight.Medium)
+                // Копировать все идеи
+                Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(14.dp)).background(Primary).clickable {
+                    val all = uiState.ideas.mapIndexed { i, idea -> "${i+1}. $idea" }.joinToString("\n")
+                    sharing.copyToClipboard(all)
+                    toastMessage = "✅ Все ${uiState.ideas.size} идей скопированы!"
+                }.padding(vertical = 13.dp), contentAlignment = Alignment.Center) {
+                    Text("Скопировать все", fontSize = 12.sp, color = Color.White, fontWeight = FontWeight.Medium)
+                }
+            } else {
+                Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(14.dp)).background(Primary).clickable { viewModel.generate() }.padding(vertical = 13.dp), contentAlignment = Alignment.Center) {
+                    Text("Придумать", fontSize = 12.sp, color = Color.White, fontWeight = FontWeight.Medium)
+                }
             }
         }
     }

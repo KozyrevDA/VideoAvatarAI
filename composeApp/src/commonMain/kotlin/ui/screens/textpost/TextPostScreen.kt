@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import data.model.TextTone
+import platform.getVideoSharing
 import org.koin.compose.viewmodel.koinViewModel
 import ui.components.PrimaryButton
 import ui.components.SectionTitle
@@ -32,12 +33,15 @@ fun TextPostScreen(
     viewModel: TextPostViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val sharing = remember { getVideoSharing() }
+    var copyMessage by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize().background(Background).statusBarsPadding()) {
         Column(modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp)) {
             Spacer(Modifier.height(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Box(modifier = Modifier.size(32.dp).clip(RoundedCornerShape(10.dp)).background(PrimaryContainer).clickable { navigationActions.navigateBack() }, contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.size(32.dp).clip(RoundedCornerShape(10.dp)).background(PrimaryContainer)
+                    .clickable { navigationActions.navigateBack() }, contentAlignment = Alignment.Center) {
                     Text("←", fontSize = 16.sp, color = Primary)
                 }
                 Text("Текст для поста", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
@@ -70,8 +74,9 @@ fun TextPostScreen(
 
             SectionTitle("ТОН")
             Spacer(Modifier.height(6.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
-                listOf(TextTone.FRIENDLY to "Дружелюбный", TextTone.EXPERT to "Экспертный", TextTone.FUNNY to "С юмором").forEach { (tone, label) ->
+            Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth()) {
+                listOf(TextTone.FRIENDLY to "Дружелюбный", TextTone.EXPERT to "Экспертный",
+                       TextTone.FUNNY to "С юмором", TextTone.MOTIVATIONAL to "Мотивация").forEach { (tone, label) ->
                     val sel = uiState.tone == tone
                     Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(if (sel) PrimaryContainer else Color.Transparent).border(0.5.dp, if (sel) PrimaryContainerDark else BorderSecondary, RoundedCornerShape(20.dp)).clickable { viewModel.onToneSelect(tone) }.padding(horizontal = 10.dp, vertical = 5.dp)) {
                         Text(if (sel) "$label ✓" else label, fontSize = 10.sp, color = if (sel) Primary else TextSecondary)
@@ -85,6 +90,7 @@ fun TextPostScreen(
                 Spacer(Modifier.height(12.dp))
                 Text("Результат", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = OnBackground)
                 Spacer(Modifier.height(6.dp))
+
                 Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(PrimaryContainer).border(0.5.dp, PrimaryContainerDark, RoundedCornerShape(12.dp)).padding(12.dp)) {
                     Column {
                         Text(result.text, fontSize = 12.sp, color = Primary.copy(0.9f), lineHeight = 18.sp)
@@ -94,12 +100,38 @@ fun TextPostScreen(
                         }
                     }
                 }
+
+                // Сообщение о копировании
+                copyMessage?.let { msg ->
+                    Spacer(Modifier.height(6.dp))
+                    Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(SecondaryContainer).padding(8.dp)) {
+                        Text(msg, fontSize = 11.sp, color = Secondary)
+                    }
+                }
+
                 Spacer(Modifier.height(8.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    listOf("Изменить", "Другой", "Копировать").forEachIndexed { idx, label ->
-                        Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(if (idx == 2) Primary else Surface).border(0.5.dp, if (idx == 2) Color.Transparent else BorderSecondary, RoundedCornerShape(10.dp)).clickable { if (idx == 1) viewModel.generate() }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                            Text(label, fontSize = 10.sp, color = if (idx == 2) Color.White else TextSecondary)
+                    // Изменить — очищает результат чтобы переписать тему
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).clickable { viewModel.clearResult() }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                        Text("Изменить", fontSize = 10.sp, color = TextSecondary)
+                    }
+                    // Другой — генерирует новый вариант
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).clickable { viewModel.generate() }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                        Text("Другой", fontSize = 10.sp, color = TextSecondary)
+                    }
+                    // Копировать — в буфер обмена
+                    Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Primary).clickable {
+                        val fullText = buildString {
+                            append(result.text)
+                            if (result.hashtags.isNotEmpty()) {
+                                append("\n\n")
+                                append(result.hashtags.joinToString(" ") { "#$it" })
+                            }
                         }
+                        sharing.copyToClipboard(fullText)
+                        copyMessage = "✅ Скопировано!"
+                    }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
+                        Text("Копировать", fontSize = 10.sp, color = Color.White)
                     }
                 }
             }
@@ -110,7 +142,8 @@ fun TextPostScreen(
             if (uiState.isLoading) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Primary) }
             } else {
-                PrimaryButton(if (uiState.result != null) "Сгенерировать заново" else "Написать текст", onClick = { viewModel.generate() })
+                PrimaryButton(if (uiState.result != null) "Сгенерировать заново" else "Написать текст",
+                    onClick = { copyMessage = null; viewModel.generate() })
             }
         }
     }
