@@ -1,5 +1,7 @@
 package ui.screens.launch
 
+import i18n.LocalStrings
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

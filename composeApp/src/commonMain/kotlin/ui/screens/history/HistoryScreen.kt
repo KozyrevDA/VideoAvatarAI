@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,11 +29,12 @@ fun HistoryScreen(
     navigationActions: AppNavigationActions,
     viewModel: HistoryViewModel = koinViewModel(),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().background(Background).statusBarsPadding()) {
         Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
-            Text("История", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = OnBackground)
+            Text(s.historyTitle, fontSize = 18.sp, fontWeight = FontWeight.Medium, color = OnBackground)
         }
 
         when {
@@ -122,13 +124,13 @@ private fun HistoryRow(emoji: String, bg: Color, title: String, subtitle: String
                 horizontalArrangement = Arrangement.spacedBy(3.dp), verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text("✓", fontSize = 8.sp, color = Secondary)
-                Text("Готово", fontSize = 8.sp, color = Secondary, fontWeight = FontWeight.Medium)
+                Text(s.ready, fontSize = 8.sp, color = Secondary, fontWeight = FontWeight.Medium)
             }
             "processing" -> Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(WarningContainer).padding(horizontal = 7.dp, vertical = 3.dp)) {
                 Text("⏳ Создаётся", fontSize = 8.sp, color = Warning, fontWeight = FontWeight.Medium)
             }
             else -> Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(Color(0xFFFFEBEE)).padding(horizontal = 7.dp, vertical = 3.dp)) {
-                Text("Ошибка", fontSize = 8.sp, color = Color(0xFFC62828), fontWeight = FontWeight.Medium)
+                Text(s.error, fontSize = 8.sp, color = Color(0xFFC62828), fontWeight = FontWeight.Medium)
             }
         }
     }

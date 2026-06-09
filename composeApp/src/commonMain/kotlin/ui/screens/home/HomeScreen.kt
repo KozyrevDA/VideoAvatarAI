@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ fun HomeScreen(
     navigationActions: AppNavigationActions,
     viewModel: HomeViewModel = koinViewModel(),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
@@ -44,7 +46,7 @@ fun HomeScreen(
             AnimatedVisibility(visible, enter = fadeIn(tween(400))) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Column {
-                        Text("Добрый день", fontSize = 11.sp, color = TextTertiary)
+                        Text(s.homeGreeting, fontSize = 11.sp, color = TextTertiary)
                         Text("Привет!", fontSize = 20.sp, fontWeight = FontWeight.Medium, color = OnBackground)
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -74,8 +76,8 @@ fun HomeScreen(
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Box(modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)).background(Primary.copy(0.18f)), contentAlignment = Alignment.Center) { Text("👤", fontSize = 22.sp) }
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Видео из фото", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF26215C), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                Text("Аватар говорит твоим голосом", fontSize = 11.sp, color = Primary.copy(0.7f), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(s.avatarTitle, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF26215C), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                Text(s.avatarSubtitle, fontSize = 11.sp, color = Primary.copy(0.7f), maxLines = 1, overflow = TextOverflow.Ellipsis)
                             }
                             Box(modifier = Modifier.size(32.dp).clip(CircleShape).background(Surface), contentAlignment = Alignment.Center) { Text("→", fontSize = 14.sp, color = Primary) }
                         }
@@ -84,7 +86,7 @@ fun HomeScreen(
                     // Small cards
                     Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                         SmallCard("✏️", "Текст", "для поста", Modifier.weight(1f)) { navigationActions.navigateToTextPost() }
-                        SmallCard("💡", "Темы", "30 идей", Modifier.weight(1f)) { navigationActions.navigateToIdeas() }
+                        SmallCard("💡", s.navIdeas, "30 идей", Modifier.weight(1f)) { navigationActions.navigateToIdeas() }
                     }
 
                     // Translation
@@ -95,7 +97,7 @@ fun HomeScreen(
                             Box(modifier = Modifier.size(38.dp).clip(RoundedCornerShape(12.dp)).background(SecondaryContainer), contentAlignment = Alignment.Center) { Text("🌍", fontSize = 19.sp) }
                             Column(modifier = Modifier.weight(1f)) {
                                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Text("Перевести видео", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = Color(0xFF085041))
+                                    Text(s.translateTitle, fontSize = 13.sp, fontWeight = FontWeight.Medium, color = Color(0xFF085041))
                                     Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(SecondaryContainer).padding(horizontal = 6.dp, vertical = 2.dp)) {
                                         Text("Новинка", fontSize = 8.sp, color = Secondary, fontWeight = FontWeight.Medium)
                                     }
@@ -178,7 +180,7 @@ private fun LangBadge(lang: String) {
 @Composable
 fun BottomNav(current: String, onHome: () -> Unit, onHistory: () -> Unit, onIdeas: () -> Unit, onSettings: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth().background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(0.dp)).padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-        listOf(Triple("home","⌂","Главная"), Triple("history","◷","История"), Triple("ideas","💡","Темы"), Triple("settings","⚙","Настройки")).zip(listOf(onHome, onHistory, onIdeas, onSettings)).forEach { (item, action) ->
+        listOf(Triple("home","⌂",s.navHome), Triple("history","◷",s.navHistory), Triple("ideas","💡",s.navIdeas), Triple("settings","⚙",s.navSettings)).zip(listOf(onHome, onHistory, onIdeas, onSettings)).forEach { (item, action) ->
             val (key, icon, label) = item
             val sel = current == key
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable { action() }.padding(horizontal = 14.dp, vertical = 4.dp)) {

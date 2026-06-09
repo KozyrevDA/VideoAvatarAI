@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +30,8 @@ import ui.theme.*
 fun TranslateScreen(
     navigationActions: AppNavigationActions,
     videoId: String,
-    viewModel: TranslateViewModel = koinViewModel(parameters = { parametersOf(videoId) }),
+    viewModel: TranslateViewModel = koinViewModel(parameters = {
+    val s = LocalStrings.current parametersOf(videoId) }),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -40,7 +42,7 @@ fun TranslateScreen(
                 Box(modifier = Modifier.size(32.dp).clip(RoundedCornerShape(10.dp)).background(PrimaryContainer).clickable { navigationActions.navigateBack() }, contentAlignment = Alignment.Center) {
                     Text("←", fontSize = 16.sp, color = Primary)
                 }
-                Text("Перевести видео", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
+                Text(s.translateTitle, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
             }
             Spacer(Modifier.height(16.dp))
 
@@ -64,10 +66,10 @@ fun TranslateScreen(
             }
             Spacer(Modifier.height(16.dp))
 
-            Text("Голос", fontSize = 12.sp, color = TextSecondary)
+            Text(s.translateVoiceLabel, fontSize = 12.sp, color = TextSecondary)
             Spacer(Modifier.height(6.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                listOf(true to "Мой голос", false to "Стандартный").forEach { (mine, label) ->
+                listOf(true to s.translateVoiceCloned, false to s.translateVoiceStandard).forEach { (mine, label) ->
                     val sel = uiState.useClonedVoice == mine
                     Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(if (sel) PrimaryContainer else Surface).border(0.5.dp, if (sel) PrimaryContainerDark else BorderSecondary, RoundedCornerShape(20.dp)).clickable { viewModel.onVoiceToggle(mine) }.padding(horizontal = 10.dp, vertical = 5.dp)) {
                         Text(if (sel) "$label ✓" else label, fontSize = 10.sp, color = if (sel) Primary else TextSecondary)
@@ -103,7 +105,7 @@ fun TranslateScreen(
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Secondary) }
             } else {
                 Box(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Secondary).clickable { viewModel.translate { taskId -> navigationActions.navigateToResult(taskId) } }.padding(vertical = 13.dp), contentAlignment = Alignment.Center) {
-                    Text("Перевести — 1 токен", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                    Text(s.translateBtn, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.White)
                 }
             }
         }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,7 @@ fun SettingsScreen(
     navigationActions: AppNavigationActions,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     var showVoiceDialog by remember { mutableStateOf(false) }
 
@@ -87,12 +89,12 @@ fun SettingsScreen(
                 }
             }
             Divider()
-            SettingsRow("Записать голос", showArrow = true, onClick = { showVoiceDialog = true }) {}
+            SettingsRow(s.settingsVoice, showArrow = true, onClick = { showVoiceDialog = true }) {}
 
             Spacer(Modifier.height(8.dp))
             Divider()
             SectionHeader("Приложение")
-            SettingsRow("Уведомления") {
+            SettingsRow(s.settingsNotifications) {
                 Toggle(enabled = uiState.notificationsEnabled, onToggle = { viewModel.toggleNotifications() })
             }
 

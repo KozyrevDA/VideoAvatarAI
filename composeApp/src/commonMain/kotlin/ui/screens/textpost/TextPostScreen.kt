@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ fun TextPostScreen(
     navigationActions: AppNavigationActions,
     viewModel: TextPostViewModel = koinViewModel(),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     val sharing = remember { getVideoSharing() }
     var copyMessage by remember { mutableStateOf<String?>(null) }
@@ -44,23 +46,23 @@ fun TextPostScreen(
                     .clickable { navigationActions.navigateBack() }, contentAlignment = Alignment.Center) {
                     Text("←", fontSize = 16.sp, color = Primary)
                 }
-                Text("Текст для поста", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
+                Text(s.textTitle, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
             }
             Spacer(Modifier.height(18.dp))
 
-            Text("О чём пост?", fontSize = 12.sp, color = TextSecondary)
+            Text(s.textTopicLabel, fontSize = 12.sp, color = TextSecondary)
             Spacer(Modifier.height(4.dp))
             TextField(
                 value = uiState.topic,
                 onValueChange = { viewModel.onTopicChange(it) },
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).border(0.5.dp, BorderSecondary, RoundedCornerShape(12.dp)),
-                placeholder = { Text("Паста карбонара — рецепт за 15 минут", fontSize = 12.sp, color = TextTertiary) },
+                placeholder = { Text(s.textTopicPlaceholder, fontSize = 12.sp, color = TextTertiary) },
                 colors = TextFieldDefaults.colors(focusedContainerColor = Surface, unfocusedContainerColor = Surface, focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent),
                 singleLine = true,
             )
             Spacer(Modifier.height(14.dp))
 
-            SectionTitle("ПЛАТФОРМА")
+            SectionTitle(s.textPlatformLabel)
             Spacer(Modifier.height(6.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
                 listOf("instagram" to "Instagram", "tiktok" to "TikTok", "vk" to "VK", "youtube" to "YouTube").forEach { (key, label) ->
@@ -72,11 +74,11 @@ fun TextPostScreen(
             }
             Spacer(Modifier.height(14.dp))
 
-            SectionTitle("ТОН")
+            SectionTitle(s.textToneLabel)
             Spacer(Modifier.height(6.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(5.dp), modifier = Modifier.fillMaxWidth()) {
-                listOf(TextTone.FRIENDLY to "Дружелюбный", TextTone.EXPERT to "Экспертный",
-                       TextTone.FUNNY to "С юмором", TextTone.MOTIVATIONAL to "Мотивация").forEach { (tone, label) ->
+                listOf(TextTone.FRIENDLY to s.textToneFriendly, TextTone.EXPERT to s.textToneExpert,
+                       TextTone.FUNNY to s.textToneFunny, TextTone.MOTIVATIONAL to "Мотивация").forEach { (tone, label) ->
                     val sel = uiState.tone == tone
                     Box(modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(if (sel) PrimaryContainer else Color.Transparent).border(0.5.dp, if (sel) PrimaryContainerDark else BorderSecondary, RoundedCornerShape(20.dp)).clickable { viewModel.onToneSelect(tone) }.padding(horizontal = 10.dp, vertical = 5.dp)) {
                         Text(if (sel) "$label ✓" else label, fontSize = 10.sp, color = if (sel) Primary else TextSecondary)
@@ -113,11 +115,11 @@ fun TextPostScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     // Изменить — очищает результат чтобы переписать тему
                     Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).clickable { viewModel.clearResult() }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                        Text("Изменить", fontSize = 10.sp, color = TextSecondary)
+                        Text(s.textChangeBtn, fontSize = 10.sp, color = TextSecondary)
                     }
                     // Другой — генерирует новый вариант
                     Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(10.dp)).clickable { viewModel.generate() }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                        Text("Другой", fontSize = 10.sp, color = TextSecondary)
+                        Text(s.textAnotherBtn, fontSize = 10.sp, color = TextSecondary)
                     }
                     // Копировать — в буфер обмена
                     Box(modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp)).background(Primary).clickable {
@@ -129,9 +131,9 @@ fun TextPostScreen(
                             }
                         }
                         sharing.copyToClipboard(fullText)
-                        copyMessage = "✅ Скопировано!"
+                        copyMessage = "✅ ${s.copied}"
                     }.padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-                        Text("Копировать", fontSize = 10.sp, color = Color.White)
+                        Text(s.copy, fontSize = 10.sp, color = Color.White)
                     }
                 }
             }
@@ -142,7 +144,7 @@ fun TextPostScreen(
             if (uiState.isLoading) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Primary) }
             } else {
-                PrimaryButton(if (uiState.result != null) "Сгенерировать заново" else "Написать текст",
+                PrimaryButton(if (uiState.result != null) s.textGenerateBtn else s.textGenerateBtn,
                     onClick = { copyMessage = null; viewModel.generate() })
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +32,8 @@ import ui.theme.*
 fun ResultScreen(
     navigationActions: AppNavigationActions,
     videoId: String,
-    viewModel: ResultViewModel = koinViewModel(parameters = { parametersOf(videoId) }),
+    viewModel: ResultViewModel = koinViewModel(parameters = {
+    val s = LocalStrings.current parametersOf(videoId) }),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
@@ -58,7 +60,7 @@ fun ResultScreen(
                 Text("←", fontSize = 16.sp, color = Primary)
             }
             Text(
-                if (uiState.isGenerating) "Создаём видео..." else "Видео готово! 🎉",
+                if (uiState.isGenerating) "Создаём видео..." else s.resultTitle,
                 fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground
             )
         }

@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
+import i18n.LocalStrings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ fun AvatarScreen(
     navigationActions: AppNavigationActions,
     viewModel: AvatarViewModel = koinViewModel(),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     val showImagePicker = remember { mutableStateOf(false) }
     val imagePicker = remember { getImagePicker() }
@@ -55,7 +57,7 @@ fun AvatarScreen(
                     .clickable { navigationActions.navigateBack() }, contentAlignment = Alignment.Center) {
                     Text("←", fontSize = 16.sp, color = Primary)
                 }
-                Text("Видео из фото", fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
+                Text(s.avatarTitle, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = OnBackground)
             }
             Spacer(Modifier.height(18.dp))
 
@@ -73,15 +75,15 @@ fun AvatarScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("✅", fontSize = 28.sp)
                         Spacer(Modifier.height(4.dp))
-                        Text("Фото выбрано", fontSize = 12.sp, color = Secondary, fontWeight = FontWeight.Medium)
-                        Text("Нажми чтобы изменить", fontSize = 10.sp, color = TextSecondary)
+                        Text(s.avatarPhotoSelected, fontSize = 12.sp, color = Secondary, fontWeight = FontWeight.Medium)
+                        Text(s.avatarChangePhoto, fontSize = 10.sp, color = TextSecondary)
                     }
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("👤", fontSize = 28.sp)
                         Spacer(Modifier.height(6.dp))
-                        Text("Загрузи своё фото", fontSize = 12.sp, color = Primary, fontWeight = FontWeight.Medium)
-                        Text("JPG, PNG — лицо чётко видно", fontSize = 10.sp, color = TextSecondary)
+                        Text(s.avatarUploadPhoto, fontSize = 12.sp, color = Primary, fontWeight = FontWeight.Medium)
+                        Text(s.avatarUploadHint, fontSize = 10.sp, color = TextSecondary)
                     }
                 }
             }
@@ -94,7 +96,7 @@ fun AvatarScreen(
                 onValueChange = { viewModel.onTextChange(it) },
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp))
                     .border(0.5.dp, if (uiState.error != null) Error else BorderSecondary, RoundedCornerShape(14.dp)),
-                placeholder = { Text("Привет! Сегодня покажу рецепт...", fontSize = 12.sp, color = TextTertiary) },
+                placeholder = { Text(s.avatarTextPlaceholder, fontSize = 12.sp, color = TextTertiary) },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Surface, unfocusedContainerColor = Surface,
                     focusedIndicatorColor = Color.Transparent, unfocusedIndicatorColor = Color.Transparent,
@@ -107,11 +109,11 @@ fun AvatarScreen(
             }
             Spacer(Modifier.height(16.dp))
 
-            SectionTitle("СТИЛЬ")
+            SectionTitle(s.avatarStyleLabel)
             Spacer(Modifier.height(6.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
                 listOf(Triple(AvatarStyle.BUSINESS, "💼", "Деловой"),
-                       Triple(AvatarStyle.CASUAL, "😊", "Casual"),
+                       Triple(AvatarStyle.CASUAL, "😊", s.avatarStyleCasual),
                        Triple(AvatarStyle.EXPERT, "⭐", "Эксперт")).forEach { (style, emoji, label) ->
                     val sel = uiState.selectedStyle == style
                     Box(
@@ -157,7 +159,7 @@ fun AvatarScreen(
                     CircularProgressIndicator(color = Primary)
                 }
             } else {
-                PrimaryButton("Создать — 1 токен", onClick = {
+                PrimaryButton(s.avatarCreateBtn, onClick = {
                     viewModel.generate { taskId -> navigationActions.navigateToResult(taskId) }
                 })
             }
