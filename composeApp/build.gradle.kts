@@ -67,8 +67,24 @@ compose.resources {
     generateResClass = auto
 }
 
+
+// ─── Keystore ─────────────────────────────────────────────────────────────────
+// Параметры через переменные окружения (не хранить в коде!)
+val keystorePath     = System.getenv("KEYSTORE_PATH")     ?: rootProject.file("keystore/release.keystore").absolutePath
+val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "VideoAvatarAI2025"
+val keyAlias         = System.getenv("KEY_ALIAS")         ?: "videoavataraii"
+val keyPassword      = System.getenv("KEY_PASSWORD")      ?: "VideoAvatarAI2025"
+
 android {
-    namespace = "org.nla.videoavataraii"
+    signingConfigs {
+        create("release") {
+            storeFile      = file(keystorePath)
+            storePassword  = keystorePassword
+            keyAlias       = keyAlias
+            keyPassword    = keyPassword
+        }
+    }
+        namespace = "org.nla.videoavataraii"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {

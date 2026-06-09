@@ -20,3 +20,8 @@ captures
 # RuStore API credentials (никогда не коммить)
 scripts/.env.rustore
 *.env.rustore
+
+# Keystore — никогда не коммить!
+keystore/
+*.keystore
+*.jks
