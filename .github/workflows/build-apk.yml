@@ -35,36 +35,27 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
-      - name: Diagnostics + Build
+      - name: Build
         run: |
-          S=$GITHUB_STEP_SUMMARY
-
-          # Пишем промежуточные результаты прямо в Summary
-          echo "## Build Diagnostics" >> $S
-
-          echo "### Tasks" >> $S
-          echo '```' >> $S
-          ./gradlew :composeApp:tasks --no-daemon 2>&1 | grep -E "assemble|install|bundle|package" | head -20 >> $S
-          echo '```' >> $S
-
-          echo "### Gradle build" >> $S
-          echo '```' >> $S
+          # Запускаем сборку, захватываем вывод
           ./gradlew :composeApp:assembleDebug \
             --no-daemon --stacktrace --no-build-cache --rerun-tasks \
-            -Dorg.gradle.configuration-cache=false 2>&1 | tail -60 >> $S
-          GRADLE_RC=$?
-          echo '```' >> $S
-          echo "**Gradle exit code: $GRADLE_RC**" >> $S
+            -Dorg.gradle.configuration-cache=false \
+            2>&1 | tee /tmp/build.log
+          GRADLE_RC=${PIPESTATUS[0]}
 
-          echo "### APK search" >> $S
-          echo '```' >> $S
-          find . -name "*.apk" 2>/dev/null >> $S || echo "none" >> $S
-          echo '```' >> $S
+          # Пишем критичные строки через ::notice:: — попадут в аннотации API
+          echo "::notice title=Gradle Exit Code::$GRADLE_RC"
 
-          echo "### Build outputs" >> $S
-          echo '```' >> $S
-          find composeApp/build/outputs -type f 2>/dev/null | head -20 >> $S || echo "no outputs dir" >> $S
-          echo '```' >> $S
+          APKS=$(find . -name "*.apk" 2>/dev/null | tr '\n' ' ')
+          echo "::notice title=APK Files::${APKS:-NONE FOUND}"
+
+          OUTPUTS=$(find composeApp/build/outputs -type f 2>/dev/null | head -10 | tr '\n' '|')
+          echo "::notice title=Build Outputs::${OUTPUTS:-no outputs dir}"
+
+          # Последние 30 строк лога
+          TAIL=$(tail -30 /tmp/build.log | tr '\n' '~')
+          echo "::notice title=Build Log Tail::$TAIL"
 
           exit $GRADLE_RC
         env:
