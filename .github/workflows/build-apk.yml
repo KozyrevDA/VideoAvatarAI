@@ -35,24 +35,39 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
+      # Проверяем что assembleDebug вообще существует
+      - name: Check tasks
+        run: |
+          ./gradlew :composeApp:tasks --all --no-daemon 2>&1 | grep -i "assemble\|debug\|apk" | head -20
+          echo "---tasks check done---"
+        continue-on-error: true
+
       - name: Build Debug APK
         run: |
-          ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
-          echo "=== Gradle exit: $? ==="
-          echo "=== APK search ==="
-          find . -name "*.apk" 2>/dev/null && echo "Found APKs above" || echo "NO APKs found anywhere!"
-          echo "=== composeApp/build/outputs ==="
-          find composeApp/build/outputs -type f 2>/dev/null | head -30 || echo "No outputs dir"
-          echo "=== Recent files (last 2 min) ==="
-          find composeApp/build -newer local.properties -type f 2>/dev/null | grep -v "\.class$" | head -20 || echo "No recent build files"
+          ./gradlew :composeApp:assembleDebug \
+            --no-daemon \
+            --stacktrace \
+            --no-build-cache \
+            --rerun-tasks \
+            -Dorg.gradle.configuration-cache=false
+          echo "=== All APKs ==="
+          find . -name "*.apk" 2>/dev/null | tee /tmp/apks.txt
+          cat /tmp/apks.txt | wc -l
+          if [ ! -s /tmp/apks.txt ]; then
+            echo "ERROR: No APK produced!"
+            echo "=== Build outputs ==="
+            find composeApp/build -type f 2>/dev/null | grep -v "\.class\|\.kotlin" | head -30
+            exit 1
+          fi
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Upload APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
           path: |
-            **/*.apk
+            composeApp/build/outputs/apk/**/*.apk
+            composeApp/build/**/*.apk
           if-no-files-found: error
           retention-days: 30
