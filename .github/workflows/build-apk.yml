@@ -40,41 +40,21 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Find and rename APK
+      - name: Locate APK
         run: |
-          echo "=== APK files ==="
-          find composeApp/build -name "*.apk" 2>/dev/null
-          mkdir -p artifacts
-          find composeApp/build -name "*.apk" | while read f; do
-            cp "$f" "artifacts/NeurosetVideo-debug.apk"
-            echo "Copied: $f → artifacts/NeurosetVideo-debug.apk"
-            break
-          done
+          echo "=== All APKs in workspace ==="
+          find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null || echo "No APKs found!"
+          echo ""
+          echo "=== composeApp/build structure ==="
+          ls -la "$GITHUB_WORKSPACE/composeApp/build/" 2>/dev/null || echo "No build dir!"
+          find "$GITHUB_WORKSPACE/composeApp/build" -type d 2>/dev/null | head -20
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: artifacts/NeurosetVideo-debug.apk
+          path: |
+            composeApp/build/outputs/apk/**/*.apk
+            composeApp/build/**/*.apk
           if-no-files-found: error
-          retention-days: 30
-
-      - name: Build Release APK
-        run: |
-          mkdir -p keystore
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/release.keystore
-          ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: NeurosetVideo-release
-          path: composeApp/build/outputs/apk/release/*.apk
-          if-no-files-found: warn
           retention-days: 30
