@@ -36,25 +36,23 @@ jobs:
           chmod +x gradlew
 
       - name: Build Debug APK
-        run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
+        run: |
+          ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
+          echo "=== Gradle exit: $? ==="
+          echo "=== APK search ==="
+          find . -name "*.apk" 2>/dev/null && echo "Found APKs above" || echo "NO APKs found anywhere!"
+          echo "=== composeApp/build/outputs ==="
+          find composeApp/build/outputs -type f 2>/dev/null | head -30 || echo "No outputs dir"
+          echo "=== Recent files (last 2 min) ==="
+          find composeApp/build -newer local.properties -type f 2>/dev/null | grep -v "\.class$" | head -20 || echo "No recent build files"
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Locate APK
-        run: |
-          echo "=== All APKs in workspace ==="
-          find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null || echo "No APKs found!"
-          echo ""
-          echo "=== composeApp/build structure ==="
-          ls -la "$GITHUB_WORKSPACE/composeApp/build/" 2>/dev/null || echo "No build dir!"
-          find "$GITHUB_WORKSPACE/composeApp/build" -type d 2>/dev/null | head -20
-
-      - name: Upload Debug APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
           path: |
-            composeApp/build/outputs/apk/**/*.apk
-            composeApp/build/**/*.apk
+            **/*.apk
           if-no-files-found: error
           retention-days: 30
