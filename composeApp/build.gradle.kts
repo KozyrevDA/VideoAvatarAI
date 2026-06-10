@@ -72,9 +72,9 @@ val keystoreFile = System.getenv("KEYSTORE_PATH")
     ?.let { file(it) }
     ?: rootProject.file("keystore/release.keystore").takeIf { it.exists() }
 
-val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "VideoAvatarAI2025"
-val keyAlias         = System.getenv("KEY_ALIAS")         ?: "videoavataraii"
-val keyPassword      = System.getenv("KEY_PASSWORD")      ?: "VideoAvatarAI2025"
+val ksStorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "VideoAvatarAI2025"
+val ksKeyAlias       = System.getenv("KEY_ALIAS")         ?: "videoavataraii"
+val ksKeyPassword    = System.getenv("KEY_PASSWORD")      ?: "VideoAvatarAI2025"
 
 android {
     namespace   = "org.nla.videoavataraii"
