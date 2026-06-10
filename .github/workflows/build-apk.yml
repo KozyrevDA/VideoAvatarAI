@@ -12,34 +12,59 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
-
       - uses: android-actions/setup-android@v3
-
       - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.konan
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle-wrapper.properties', '**/libs.versions.toml') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts','**/libs.versions.toml','**/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
-      - name: Setup environment
+      - name: Setup
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
-      # ── Debug APK ──────────────────────────────────────────────────────────
+      # Сначала только резолюция зависимостей — быстро покажет ошибку если есть
+      - name: Resolve dependencies
+        id: deps
+        run: |
+          ./gradlew :composeApp:dependencies --no-daemon 2>&1 | tail -50 > deps.log || true
+          cat deps.log
+
       - name: Build Debug APK
-        run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon -Pkotlin.incremental=false
+        id: debug
+        run: |
+          set +e
+          ./gradlew :composeApp:assembleDebug \
+            --stacktrace --no-daemon 2>&1 | tee build.log
+          echo "rc=$?" >> $GITHUB_OUTPUT
+          # Показываем последние 80 строк в Summary
+          echo "## Build log (last 80 lines)" >> $GITHUB_STEP_SUMMARY
+          tail -80 build.log >> $GITHUB_STEP_SUMMARY
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: |
+            build.log
+            deps.log
+          retention-days: 7
+
+      - name: Fail if debug failed
+        if: steps.debug.outputs.rc != '0'
+        run: exit 1
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
@@ -49,9 +74,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      # ── Release APK (опционально) ──────────────────────────────────────────
-      - name: Decode keystore
-        id: ks
+      - name: Decode keystore + Release APK
         continue-on-error: true
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -59,22 +82,15 @@ jobs:
           [ -z "$KEYSTORE_BASE64" ] && exit 0
           mkdir -p keystore
           echo "$KEYSTORE_BASE64" | base64 --decode > keystore/release.keystore
-          echo "path=$GITHUB_WORKSPACE/keystore/release.keystore" >> $GITHUB_OUTPUT
-          echo "ok=true" >> $GITHUB_OUTPUT
-
-      - name: Build Release APK
-        if: steps.ks.outputs.ok == 'true'
-        continue-on-error: true
-        run: ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon -Pkotlin.incremental=false
+          ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-          KEYSTORE_PATH: ${{ steps.ks.outputs.path }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload Release APK
-        if: steps.ks.outputs.ok == 'true'
         continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
@@ -82,17 +98,3 @@ jobs:
           path: composeApp/build/outputs/apk/release/*.apk
           if-no-files-found: warn
           retention-days: 30
-
-      # ── Summary ────────────────────────────────────────────────────────────
-      - name: Summary
-        if: always()
-        run: |
-          echo "## 📱 APK Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| APK | Размер |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
-          find composeApp/build/outputs/apk -name "*.apk" 2>/dev/null | while read f; do
-            echo "| $(basename $f) | $(du -h "$f" | cut -f1) |" >> $GITHUB_STEP_SUMMARY
-          done
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "⬇️ **Скачать:** Artifacts ↓ внизу страницы" >> $GITHUB_STEP_SUMMARY
