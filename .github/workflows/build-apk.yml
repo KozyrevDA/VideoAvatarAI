@@ -34,28 +34,22 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-
-      - name: Check dependencies
-        run: ./gradlew :composeApp:dependencies --configuration releaseRuntimeClasspath --no-daemon 2>&1 | tail -30 || true
 
       - name: Build Debug APK
-        id: build_debug
         run: |
           ./gradlew :composeApp:assembleDebug \
-            --stacktrace \
-            --no-daemon \
-            --info \
+            --stacktrace --no-daemon \
             -Pkotlin.incremental=false \
-            2>&1 | tee build.log
-          echo "exit_code=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+            2>&1 | tee build-debug.log
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Upload build log (on failure)
+      - name: Upload build log
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: build-log
-          path: build.log
+          path: build-debug.log
           retention-days: 7
 
       - name: Decode keystore
@@ -66,7 +60,11 @@ jobs:
           if [ -n "$KEYSTORE_BASE64" ]; then
             mkdir -p keystore
             echo "$KEYSTORE_BASE64" | base64 --decode > keystore/release.keystore
+            # Проверяем
+            keytool -list -keystore keystore/release.keystore \
+              -storepass "${{ secrets.KEYSTORE_PASSWORD }}" 2>&1 | head -5
             echo "exists=true" >> $GITHUB_OUTPUT
+            echo "path=$GITHUB_WORKSPACE/keystore/release.keystore" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
@@ -74,9 +72,13 @@ jobs:
       - name: Build Release APK
         if: steps.keystore.outputs.exists == 'true'
         run: |
-          ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon
+          ./gradlew :composeApp:assembleRelease \
+            --stacktrace --no-daemon \
+            -Pkotlin.incremental=false
         env:
-          KEYSTORE_PATH: keystore/release.keystore
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          # Абсолютный путь к keystore
+          KEYSTORE_PATH: ${{ steps.keystore.outputs.path }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -86,21 +88,42 @@ jobs:
           mkdir -p artifacts
           find composeApp/build/outputs/apk -name "*.apk" | while read f; do
             TYPE=$(echo "$f" | grep -oE 'debug|release')
-            cp "$f" "artifacts/НейросетьВидео-${TYPE}.apk"
-            echo "📦 $(du -h "artifacts/НейросетьВидео-${TYPE}.apk")"
+            DEST="artifacts/НейросетьВидео-${TYPE}.apk"
+            cp "$f" "$DEST"
+            SIZE=$(du -h "$DEST" | cut -f1)
+            echo "✅ $DEST ($SIZE)"
           done
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
         with:
           name: НейросетьВидео-debug
           path: artifacts/НейросетьВидео-debug.apk
           if-no-files-found: error
           retention-days: 30
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
         if: steps.keystore.outputs.exists == 'true'
         with:
           name: НейросетьВидео-release
           path: artifacts/НейросетьВидео-release.apk
           if-no-files-found: warn
           retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Сборка APK — Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if ls artifacts/*.apk 2>/dev/null | grep -q apk; then
+            echo "| Файл | Размер |" >> $GITHUB_STEP_SUMMARY
+            echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+            for f in artifacts/*.apk; do
+              echo "| $(basename $f) | $(du -h $f | cut -f1) |" >> $GITHUB_STEP_SUMMARY
+            done
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ **Скачать APK:** прокрути вниз до раздела **Artifacts**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ APK не собрался" >> $GITHUB_STEP_SUMMARY
+          fi
