@@ -34,39 +34,46 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          cat local.properties
 
-      - name: Run Gradle (capture ALL output)
-        run: |
-          set +e
-          ./gradlew :composeApp:assembleDebug \
-            --stacktrace \
-            --no-daemon \
-            --info \
-            2>&1 | tee /tmp/gradle_full.log
-          GRADLE_RC=${PIPESTATUS[0]}
+      # Шаг 1: Просто проверить что Gradle стартует
+      - name: Gradle version check
+        run: ./gradlew --version 2>&1
 
-          echo "## Gradle Build Log" >> $GITHUB_STEP_SUMMARY
-          echo "Exit code: $GRADLE_RC" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+      # Шаг 2: Посмотреть задачи без сборки
+      - name: List tasks
+        run: ./gradlew :composeApp:tasks --no-daemon 2>&1 | head -50
+        continue-on-error: true
 
-          # Только строки с ошибками — для диагностики
-          echo "### Errors & Failures" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -E "error:|Error|FAILURE|Exception|Could not|Unresolved|BUILD FAILED|not found" \
-            /tmp/gradle_full.log | head -100 >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Last 150 lines" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -150 /tmp/gradle_full.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-
-          exit $GRADLE_RC
+      # Шаг 3: Попробовать только конфигурацию (без компиляции)
+      - name: Configuration check
+        run: ./gradlew :composeApp:dependencies --configuration debugRuntimeClasspath --no-daemon 2>&1 | tail -80
+        continue-on-error: true
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Upload Debug APK
+      # Шаг 4: Реальная сборка с выводом в файл-артефакт
+      - name: Build Debug APK
+        run: |
+          ./gradlew :composeApp:assembleDebug \
+            --stacktrace \
+            --no-daemon \
+            2>&1 | tee build.log
+          echo "Exit: ${PIPESTATUS[0]}"
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Upload build log (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: warn
+          retention-days: 3
+
+      - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
