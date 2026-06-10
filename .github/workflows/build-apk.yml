@@ -34,50 +34,47 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          cat local.properties
 
-      # Шаг 1: Просто проверить что Gradle стартует
-      - name: Gradle version check
-        run: ./gradlew --version 2>&1
-
-      # Шаг 2: Посмотреть задачи без сборки
-      - name: List tasks
-        run: ./gradlew :composeApp:tasks --no-daemon 2>&1 | head -50
-        continue-on-error: true
-
-      # Шаг 3: Попробовать только конфигурацию (без компиляции)
-      - name: Configuration check
-        run: ./gradlew :composeApp:dependencies --configuration debugRuntimeClasspath --no-daemon 2>&1 | tail -80
-        continue-on-error: true
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-
-      # Шаг 4: Реальная сборка с выводом в файл-артефакт
       - name: Build Debug APK
-        run: |
-          ./gradlew :composeApp:assembleDebug \
-            --stacktrace \
-            --no-daemon \
-            2>&1 | tee build.log
-          echo "Exit: ${PIPESTATUS[0]}"
+        run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Upload build log (always)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
-          if-no-files-found: warn
-          retention-days: 3
+      - name: Find and rename APK
+        run: |
+          echo "=== APK files ==="
+          find composeApp/build -name "*.apk" 2>/dev/null
+          mkdir -p artifacts
+          find composeApp/build -name "*.apk" | while read f; do
+            cp "$f" "artifacts/NeurosetVideo-debug.apk"
+            echo "Copied: $f → artifacts/NeurosetVideo-debug.apk"
+            break
+          done
 
-      - name: Upload APK
-        if: success()
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: composeApp/build/outputs/apk/debug/*.apk
+          path: artifacts/NeurosetVideo-debug.apk
           if-no-files-found: error
+          retention-days: 30
+
+      - name: Build Release APK
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/release.keystore
+          ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeurosetVideo-release
+          path: composeApp/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
           retention-days: 30
