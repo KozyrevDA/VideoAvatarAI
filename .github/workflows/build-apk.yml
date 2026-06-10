@@ -35,30 +35,38 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
-      # Проверяем что assembleDebug вообще существует
-      - name: Check tasks
+      - name: Diagnostics + Build
         run: |
-          ./gradlew :composeApp:tasks --all --no-daemon 2>&1 | grep -i "assemble\|debug\|apk" | head -20
-          echo "---tasks check done---"
-        continue-on-error: true
+          S=$GITHUB_STEP_SUMMARY
 
-      - name: Build Debug APK
-        run: |
+          # Пишем промежуточные результаты прямо в Summary
+          echo "## Build Diagnostics" >> $S
+
+          echo "### Tasks" >> $S
+          echo '```' >> $S
+          ./gradlew :composeApp:tasks --no-daemon 2>&1 | grep -E "assemble|install|bundle|package" | head -20 >> $S
+          echo '```' >> $S
+
+          echo "### Gradle build" >> $S
+          echo '```' >> $S
           ./gradlew :composeApp:assembleDebug \
-            --no-daemon \
-            --stacktrace \
-            --no-build-cache \
-            --rerun-tasks \
-            -Dorg.gradle.configuration-cache=false
-          echo "=== All APKs ==="
-          find . -name "*.apk" 2>/dev/null | tee /tmp/apks.txt
-          cat /tmp/apks.txt | wc -l
-          if [ ! -s /tmp/apks.txt ]; then
-            echo "ERROR: No APK produced!"
-            echo "=== Build outputs ==="
-            find composeApp/build -type f 2>/dev/null | grep -v "\.class\|\.kotlin" | head -30
-            exit 1
-          fi
+            --no-daemon --stacktrace --no-build-cache --rerun-tasks \
+            -Dorg.gradle.configuration-cache=false 2>&1 | tail -60 >> $S
+          GRADLE_RC=$?
+          echo '```' >> $S
+          echo "**Gradle exit code: $GRADLE_RC**" >> $S
+
+          echo "### APK search" >> $S
+          echo '```' >> $S
+          find . -name "*.apk" 2>/dev/null >> $S || echo "none" >> $S
+          echo '```' >> $S
+
+          echo "### Build outputs" >> $S
+          echo '```' >> $S
+          find composeApp/build/outputs -type f 2>/dev/null | head -20 >> $S || echo "no outputs dir" >> $S
+          echo '```' >> $S
+
+          exit $GRADLE_RC
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
@@ -66,8 +74,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: |
-            composeApp/build/outputs/apk/**/*.apk
-            composeApp/build/**/*.apk
+          path: composeApp/build/outputs/apk/**/*.apk
           if-no-files-found: error
           retention-days: 30
