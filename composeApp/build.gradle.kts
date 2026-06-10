@@ -96,9 +96,9 @@ android {
         signingConfigs {
             create("release") {
                 storeFile     = keystoreFile
-                storePassword = keystorePassword
-                this.keyAlias = keyAlias
-                keyPassword   = keyPassword
+                storePassword = ksStorePassword
+                keyAlias      = ksKeyAlias
+                keyPassword   = ksKeyPassword
             }
         }
     }
