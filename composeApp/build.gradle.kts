@@ -67,50 +67,61 @@ compose.resources {
     generateResClass = auto
 }
 
+// ── Signing ────────────────────────────────────────────────────────────────────
+val keystoreFile = System.getenv("KEYSTORE_PATH")
+    ?.let { file(it) }
+    ?: rootProject.file("keystore/release.keystore").takeIf { it.exists() }
 
-// ─── Keystore ─────────────────────────────────────────────────────────────────
-// Параметры через переменные окружения (не хранить в коде!)
-val keystorePath     = System.getenv("KEYSTORE_PATH")     ?: rootProject.file("keystore/release.keystore").absolutePath
 val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "VideoAvatarAI2025"
 val keyAlias         = System.getenv("KEY_ALIAS")         ?: "videoavataraii"
 val keyPassword      = System.getenv("KEY_PASSWORD")      ?: "VideoAvatarAI2025"
 
 android {
-    signingConfigs {
-        create("release") {
-            storeFile      = file(keystorePath)
-            storePassword  = keystorePassword
-            keyAlias       = keyAlias
-            keyPassword    = keyPassword
-        }
-    }
-        namespace = "org.nla.videoavataraii"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    namespace   = "org.nla.videoavataraii"
+    compileSdk  = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "org.nla.videoavataraii"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        applicationId  = "org.nla.videoavataraii"
+        minSdk         = libs.versions.android.minSdk.get().toInt()
+        targetSdk      = libs.versions.android.targetSdk.get().toInt()
+        versionCode    = 1
+        versionName    = "1.0"
 
         buildConfigField("boolean", "IS_RUSTORE", "true")
         buildConfigField("String", "API_BASE_URL", "\"https://api.videoavataraii.com\"")
     }
 
-    buildFeatures {
-        buildConfig = true
+    // Signing config только если keystore файл существует
+    if (keystoreFile != null) {
+        signingConfigs {
+            create("release") {
+                storeFile     = keystoreFile
+                storePassword = keystorePassword
+                this.keyAlias = keyAlias
+                keyPassword   = keyPassword
+            }
+        }
     }
+
+    buildFeatures { buildConfig = true }
 
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
     }
 
     buildTypes {
-        getByName("debug") { isMinifyEnabled = false }
+        getByName("debug") {
+            isMinifyEnabled = false
+        }
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            if (keystoreFile != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
@@ -121,18 +132,19 @@ android {
     }
 
     dependencies {
-        implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-        implementation("com.google.firebase:firebase-analytics")
-        implementation("com.google.firebase:firebase-messaging")
-        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
+        // Firebase (опционально — не блокирует сборку)
+        implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+        implementation("com.google.firebase:firebase-messaging-ktx")
 
-        // RuStore Pay SDK (актуальный, BillingClient отключается 1 августа 2026)
-        // https://www.rustore.ru/help/sdk/pay/kotlin-java
-        implementation(platform("ru.rustore.sdk:bom:2026.04.01"))
+        // Desugaring
+        coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+
+        // RuStore Pay
+        implementation(platform("ru.rustore.sdk:bom:2025.08.01"))
         implementation("ru.rustore.sdk:pay")
 
-        // Google Play Billing (для GP версии)
-        implementation("com.android.billingclient:billing-ktx:8.0.0")
+        // Google Play Billing
+        implementation("com.android.billingclient:billing-ktx:7.1.1")
     }
 }
 

@@ -25,16 +25,12 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
+        // RuStore SDK
+        maven { url = uri("https://artifactory.rustore.ru/artifactory/projects") }
+        // JitPack
         maven { url = uri("https://jitpack.io") }
-        maven {
-            url = uri("https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
-        }
-        maven {
-            url = uri("https://artifactory-external.vkpartner.ru/artifactory/maven")
-        }
     }
 }
 
+// Только существующие модули
 include(":composeApp")
-include(":cropper")
-include(":vkauthdonate")
