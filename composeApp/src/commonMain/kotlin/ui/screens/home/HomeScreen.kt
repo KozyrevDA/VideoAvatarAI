@@ -179,6 +179,7 @@ private fun LangBadge(lang: String) {
 
 @Composable
 fun BottomNav(current: String, onHome: () -> Unit, onHistory: () -> Unit, onIdeas: () -> Unit, onSettings: () -> Unit) {
+    val s = i18n.LocalStrings.current
     Row(modifier = Modifier.fillMaxWidth().background(Surface).border(0.5.dp, BorderSecondary, RoundedCornerShape(0.dp)).padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
         listOf(Triple("home","⌂",s.navHome), Triple("history","◷",s.navHistory), Triple("ideas","💡",s.navIdeas), Triple("settings","⚙",s.navSettings)).zip(listOf(onHome, onHistory, onIdeas, onSettings)).forEach { (item, action) ->
             val (key, icon, label) = item
