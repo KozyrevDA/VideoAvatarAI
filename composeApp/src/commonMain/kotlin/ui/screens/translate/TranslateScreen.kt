@@ -30,9 +30,9 @@ import ui.theme.*
 fun TranslateScreen(
     navigationActions: AppNavigationActions,
     videoId: String,
-    viewModel: TranslateViewModel = koinViewModel(parameters = {
-    val s = LocalStrings.current parametersOf(videoId) }),
+    viewModel: TranslateViewModel = koinViewModel(parameters = { parametersOf(videoId) }),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().background(Background).statusBarsPadding()) {
