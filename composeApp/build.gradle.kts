@@ -139,6 +139,25 @@ android {
         // Desugaring
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
+
+        // ── RuStore Pay ──────────────────────────────────────────────────────────
+        // Вариант 1: локальные AAR из libs/ (рекомендуется для CI)
+        val ruStorePayAar    = rootProject.file("libs/rustore-pay.aar")
+        val ruStoreCoreAar   = rootProject.file("libs/rustore-core.aar")
+        val ruStoreUtilsAar  = rootProject.file("libs/rustore-utils.aar")
+
+        if (ruStorePayAar.exists()) {
+            implementation(files(ruStorePayAar))
+            if (ruStoreCoreAar.exists())  implementation(files(ruStoreCoreAar))
+            if (ruStoreUtilsAar.exists()) implementation(files(ruStoreUtilsAar))
+            // Транзитивные зависимости RuStore
+            implementation("ru.rustore.sdk:billingclient-core:6.1.0")
+        }
+
+        // Вариант 2: через Artifactory (только локально, не работает в GitHub Actions)
+        // implementation(platform("ru.rustore.sdk:bom:2025.08.01"))
+        // implementation("ru.rustore.sdk:pay")
+
         // Google Play Billing
         implementation("com.android.billingclient:billing-ktx:7.1.1")
     }
