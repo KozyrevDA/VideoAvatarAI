@@ -44,45 +44,45 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Locate and rename APK
+      - name: Find APK
+        id: find_apk
         run: |
-          APK=$(find composeApp/build/outputs/apk/debug -name "*.apk" | head -1)
-          echo "APK path: $APK"
-          echo "APK size: $(du -h "$APK" | cut -f1)"
-          cp "$APK" NeurosetVideo-debug.apk
+          echo "=== composeApp/build/outputs ==="
+          find composeApp/build/outputs -type f 2>/dev/null | sort
+
+          echo ""
+          echo "=== All APKs in workspace ==="
+          find $GITHUB_WORKSPACE -name "*.apk" 2>/dev/null | grep -v "\./root" | grep -v "/proc" | grep -v "/sys"
+
+          # Ищем APK из нашего проекта (исключаем системные)
+          APK=$(find $GITHUB_WORKSPACE -name "*.apk" 2>/dev/null \
+            | grep -v "/proc" | grep -v "/sys" \
+            | grep -v "build-tools" | grep -v "platforms/" \
+            | sort -k5 -t/ -r | head -1)
+
+          if [ -z "$APK" ]; then
+            echo "❌ APK не найден"
+            exit 1
+          fi
+
+          SIZE=$(du -h "$APK" | cut -f1)
+          echo ""
+          echo "✅ Выбран: $APK ($SIZE)"
+          echo "apk_path=$APK" >> $GITHUB_OUTPUT
+          echo "apk_size=$SIZE" >> $GITHUB_OUTPUT
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: NeurosetVideo-debug.apk
+          path: ${{ steps.find_apk.outputs.apk_path }}
           if-no-files-found: error
-          retention-days: 30
-
-      - name: Build Release APK
-        run: |
-          mkdir -p keystore
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/release.keystore
-          ./gradlew :composeApp:assembleRelease --no-daemon --stacktrace
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: NeurosetVideo-release
-          path: composeApp/build/outputs/apk/release/*.apk
-          if-no-files-found: warn
           retention-days: 30
 
       - name: Summary
         if: always()
         run: |
           echo "## APK Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          find composeApp/build/outputs/apk -name "*.apk" 2>/dev/null | while read f; do
-            echo "- $(basename $f): $(du -h $f | cut -f1)" >> $GITHUB_STEP_SUMMARY
-          done
+          echo "Path: ${{ steps.find_apk.outputs.apk_path }}" >> $GITHUB_STEP_SUMMARY
+          echo "Size: ${{ steps.find_apk.outputs.apk_size }}" >> $GITHUB_STEP_SUMMARY
+          echo "Скачать: Artifacts ↓" >> $GITHUB_STEP_SUMMARY
