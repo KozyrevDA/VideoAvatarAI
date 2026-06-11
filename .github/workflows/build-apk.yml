@@ -24,80 +24,62 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Environment check
-        run: |
-          echo "Java: $(java -version 2>&1 | head -1)"
-          echo "ANDROID_HOME: $ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-          echo "gradlew exists: $(ls -la gradlew)"
-          echo "gradlew executable: $(file gradlew)"
-          echo "SDK build-tools: $(ls $ANDROID_SDK_ROOT/build-tools/ 2>/dev/null | head -3)"
-          echo "local.properties:"
-          cat local.properties 2>/dev/null || echo "MISSING"
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: gradle-${{ hashFiles('**/*.gradle.kts','**/libs.versions.toml') }}
+          restore-keys: gradle-
 
-      - name: Create local.properties
-        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-
-      - name: Test Gradle version
+      - name: Setup
         run: |
-          echo "=== Gradle version test ==="
-          ./gradlew --version --no-daemon 2>&1
-          echo "Gradle version exit: $?"
-
-      - name: Check module config
-        run: |
-          echo "=== settings.gradle.kts ==="
-          cat settings.gradle.kts
-          echo ""
-          echo "=== composeApp/build.gradle.kts (first 30 lines) ==="
-          head -30 composeApp/build.gradle.kts
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          chmod +x gradlew
 
       - name: Build Debug APK
-        run: |
-          echo "=== Starting Gradle build ==="
-          set -x
-          ./gradlew :composeApp:assembleDebug \
-            --stacktrace --no-daemon \
-            2>&1 | tee /tmp/gradle.log
-          echo "=== Gradle finished, exit=${PIPESTATUS[0]} ==="
-          echo "Log size: $(wc -l < /tmp/gradle.log) lines"
-          echo ""
-          echo "=== Last 50 lines ==="
-          tail -50 /tmp/gradle.log
+        run: ./gradlew :composeApp:assembleDebug --no-daemon --stacktrace
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Find APK
+      - name: Find APK (search entire filesystem like Run#25)
         run: |
-          echo "=== All files in composeApp/build/outputs ==="
-          find composeApp/build/outputs -type f 2>/dev/null | sort || echo "EMPTY"
+          echo "=== Ищем APK по всей ФС ==="
+          ALL=$(find / -name "*.apk" 2>/dev/null | grep -v proc)
+          echo "$ALL"
+
           echo ""
-          echo "=== APK files ==="
-          find composeApp/build -name "*.apk" 2>/dev/null | sort || echo "NONE"
-          echo ""
-          echo "=== composeApp/build/outputs tree ==="
-          ls -laR composeApp/build/outputs/apk/ 2>/dev/null || echo "NO APK DIR"
-          
-          APK=$(find composeApp/build -name "*.apk" 2>/dev/null | head -1)
-          if [ -n "$APK" ]; then
-            echo "✅ APK found: $APK"
-            cp "$APK" NeurosetVideo-debug.apk
-          else
-            echo "❌ No APK"
+          echo "=== composeApp/build tree ==="
+          find composeApp/build -type f 2>/dev/null | sort | head -50 || echo "пусто"
+
+          # Копируем первый найденный APK
+          APK=$(echo "$ALL" | head -1)
+          if [ -z "$APK" ]; then
+            echo "❌ APK не найден нигде"
             exit 1
           fi
+          SIZE=$(du -h "$APK" | cut -f1)
+          echo ""
+          echo "✅ APK: $APK ($SIZE)"
+          cp "$APK" NeurosetVideo-debug.apk
 
-      - name: Upload APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
           path: NeurosetVideo-debug.apk
+          if-no-files-found: error
           retention-days: 30
 
-      - name: Upload Gradle log
+      - name: Summary
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-log
-          path: /tmp/gradle.log
-          retention-days: 7
+        run: |
+          echo "## 📱 Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
+          if [ -f NeurosetVideo-debug.apk ]; then
+            echo "✅ $(du -h NeurosetVideo-debug.apk | cut -f1) — NeurosetVideo-debug.apk" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ Artifacts ↓" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ APK не создан" >> $GITHUB_STEP_SUMMARY
+          fi
