@@ -40,49 +40,60 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: List available assemble tasks
+        run: |
+          ./gradlew :composeApp:tasks --all --no-daemon 2>&1 \
+            | grep -iE "assemble|package|apk|bundle" \
+            | tee /tmp/tasks.txt
+          echo "---"
+          cat /tmp/tasks.txt
+
       - name: Build Debug APK
-        run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
-        env:
-          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-
-      - name: Find APK anywhere in workspace
         run: |
-          echo "=== Все .apk во всём workspace ==="
-          find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null || echo "Нет .apk нигде"
-          echo ""
-          echo "=== Дерево composeApp/build/outputs ==="
-          ls -la composeApp/build/outputs/ 2>/dev/null || echo "composeApp/build/outputs не существует"
-          echo ""
-          echo "=== Gradle tasks для composeApp ==="
-          ./gradlew :composeApp:tasks --all --no-daemon 2>/dev/null | grep -i "apk\|assemble\|bundle" | head -20
+          ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon 2>&1 | tee /tmp/build.log
+          echo "EXIT=${PIPESTATUS[0]}"
 
-      - name: Copy APK
+      - name: Diagnose build output
         run: |
-          APK=$(find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null | head -1)
+          {
+            echo "=== EXIT CODE ==="
+            cat /tmp/build.log | grep -E "BUILD|FAIL|SUCCESS" | tail -5
+            echo ""
+            echo "=== composeApp/build tree ==="
+            find composeApp/build -type f 2>/dev/null | head -50 || echo "пусто"
+            echo ""
+            echo "=== All APK files ==="
+            find / -name "*.apk" 2>/dev/null | grep -v proc | head -20 || echo "нет"
+            echo ""
+            echo "=== Gradle outputs dir ==="
+            ls -la composeApp/build/outputs/ 2>/dev/null || echo "не существует"
+          } | tee /tmp/diag.txt
+          cat /tmp/diag.txt
+
+      - name: Upload diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-diagnostic
+          path: |
+            /tmp/build.log
+            /tmp/diag.txt
+            /tmp/tasks.txt
+          retention-days: 7
+
+      - name: Copy and upload APK
+        run: |
+          APK=$(find / -name "*.apk" 2>/dev/null | grep -v proc | head -1)
           if [ -z "$APK" ]; then
-            echo "❌ APK не найден нигде!"
+            echo "APK не найден вообще нигде!"
             exit 1
           fi
-          echo "✅ APK: $APK — $(du -h "$APK" | cut -f1)"
+          echo "APK: $APK"
           cp "$APK" NeurosetVideo-debug.apk
 
-      - name: Upload Debug APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
           path: NeurosetVideo-debug.apk
           retention-days: 30
-
-      - name: Summary
-        if: always()
-        run: |
-          echo "## Нейросеть Видео — Debug APK" >> $GITHUB_STEP_SUMMARY
-          if [ -f NeurosetVideo-debug.apk ]; then
-            echo "✅ $(du -h NeurosetVideo-debug.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
-            echo "⬇️ Artifacts ↓ внизу страницы" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ APK не найден" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null >> $GITHUB_STEP_SUMMARY || echo "Пусто" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
