@@ -32,9 +32,9 @@ import ui.theme.*
 fun ResultScreen(
     navigationActions: AppNavigationActions,
     videoId: String,
-    viewModel: ResultViewModel = koinViewModel(parameters = {
-    val s = LocalStrings.current parametersOf(videoId) }),
+    viewModel: ResultViewModel = koinViewModel(parameters = { parametersOf(videoId) }),
 ) {
+    val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
     val sharing = remember { getVideoSharing() }
