@@ -25,8 +25,7 @@ import org.koin.core.parameter.parametersOf
 import ui.navigation.AppNavigationActions
 import ui.theme.*
 
-@OptIn(ExperimentalFoundationApi::class)
-@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@OptIn(ExperimentalFoundationApi::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 fun TranslateScreen(
     navigationActions: AppNavigationActions,
