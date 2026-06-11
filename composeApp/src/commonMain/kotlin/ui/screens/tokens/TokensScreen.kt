@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.compose.viewmodel.koinViewModel
+import platform.getBillingLauncher
 import ui.components.PrimaryButton
 import ui.navigation.AppNavigationActions
 import ui.theme.*
@@ -34,6 +35,7 @@ fun TokensScreen(
     viewModel: TokensViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val billingLauncher = getBillingLauncher()
 
     LaunchedEffect(uiState.isPurchaseSuccess) {
         if (uiState.isPurchaseSuccess) navigationActions.navigateBack()
@@ -82,7 +84,7 @@ fun TokensScreen(
             if (uiState.isLoading) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = Primary) }
             } else {
-                PrimaryButton("Купить ${packs[uiState.selectedPack].count} видео", onClick = { viewModel.purchase() })
+                PrimaryButton("Купить ${packs[uiState.selectedPack].count} видео", onClick = { viewModel.purchase { productId, onResult -> billingLauncher?.launch(productId, onResult) ?: onResult(false, null) } })
             }
             Spacer(Modifier.height(6.dp))
             Text("Списание через привязанную карту", fontSize = 10.sp, color = TextTertiary, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
