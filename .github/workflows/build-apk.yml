@@ -29,32 +29,63 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
-      - name: Build Debug APK (no cache, verbose)
+      - name: Build Debug APK
+        id: build
         run: |
-          # Полный вывод в файл
+          set +e
           ./gradlew :composeApp:assembleDebug \
-            --no-daemon --info --stacktrace \
+            --no-daemon --info \
             --no-build-cache \
             -Dorg.gradle.caching=false \
-            2>&1 | tee /tmp/build_full.log
+            2>&1 | tee /tmp/build.log
+          BUILD_EXIT=$?
+          set -e
 
-          echo ""
-          echo "=== LAST 100 LINES ==="
-          tail -100 /tmp/build_full.log
+          echo "exit_code=$BUILD_EXIT" >> $GITHUB_OUTPUT
 
-          echo ""
-          echo "=== APK SEARCH ==="
-          find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null \
-            | grep -v "build-tools" | grep -v "platforms" | grep -v "emulator"
+          echo "=== TAIL BUILD LOG ==="
+          tail -80 /tmp/build.log
+
+          echo "=== APKs found ==="
+          find . -name "*.apk" 2>/dev/null | grep -v "build-tools" | grep -v "platforms" | grep -v "emulator"
+
+          exit $BUILD_EXIT
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Upload APK + build log
+      - name: Upload build log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: |
-            composeApp/build/outputs/apk/debug/*.apk
-            /tmp/build_full.log
+          name: build-log
+          path: /tmp/build.log
+          retention-days: 3
           if-no-files-found: warn
-          retention-days: 7
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeurosetVideo-debug
+          path: composeApp/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Build Release APK
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/release.keystore
+          ./gradlew :composeApp:assembleRelease --no-daemon --no-build-cache
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeurosetVideo-release
+          path: composeApp/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
+          retention-days: 30
