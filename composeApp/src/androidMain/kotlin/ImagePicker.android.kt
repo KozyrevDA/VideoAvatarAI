@@ -1,3 +1,5 @@
+package utils
+
 import ImagePicker
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
