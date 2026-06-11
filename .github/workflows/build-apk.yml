@@ -36,46 +36,41 @@ jobs:
             --stacktrace --no-daemon 2>&1 > build-output.log
           echo "Exit: $?"
           echo "Log size: $(wc -c < build-output.log) bytes"
+          tail -30 build-output.log
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Diagnose and find APK
+      - name: Diagnose
         run: |
-          {
-            echo "=== BUILD LOG (last 100 lines) ==="
-            tail -100 build-output.log
-            echo ""
-            echo "=== composeApp/build directory ==="
-            find composeApp/build -type f 2>/dev/null | sort | head -50
-            echo ""
-            echo "=== APK search ==="
-            find composeApp/build -name "*.apk" 2>/dev/null
-            find composeApp/build -name "*.aar" 2>/dev/null
-          } > build-diag.txt
-          cat build-diag.txt
+          echo "=== APK files ==="
+          find composeApp/build -name "*.apk" 2>/dev/null || echo "none"
+          echo "=== AAR files ==="
+          find composeApp/build -name "*.aar" 2>/dev/null || echo "none"
+          echo "=== Build outputs ==="
+          find composeApp/build/outputs -type f 2>/dev/null | head -30 || echo "empty"
+          echo "=== Log tail ==="
+          tail -50 build-output.log
 
-      - name: Push diagnostic to repo
+      - name: Commit diagnostic
         run: |
           git config user.email "bot@nla.org"
           git config user.name "CI Bot"
-          git add build-output.log build-diag.txt
-          git commit -m "CI: build diagnostic [skip ci]" --allow-empty
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git add build-output.log
+          git diff --cached --quiet || git commit -m "ci: build diagnostic [skip ci]"
+          git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main
+        continue-on-error: true
 
-      - name: Copy APK
+      - name: Copy and upload APK
         run: |
           APK=$(find composeApp/build -name "*.apk" 2>/dev/null | head -1)
           if [ -z "$APK" ]; then
-            echo "❌ APK не найден"
-            cat build-diag.txt
+            echo "❌ APK не найден!"
             exit 1
           fi
           cp "$APK" NeurosetVideo-debug.apk
-          echo "✅ $(du -h NeurosetVideo-debug.apk | cut -f1)"
+          echo "✅ $(du -h NeurosetVideo-debug.apk)"
 
-      - name: Upload APK
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
