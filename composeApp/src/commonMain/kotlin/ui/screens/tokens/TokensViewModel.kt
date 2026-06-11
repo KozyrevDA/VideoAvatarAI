@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 data class TokensUiState(
     val isLoading: Boolean = false,
-    val selectedPack: Int = 2,     // 0=1шт, 1=5шт, 2=10шт
+    val selectedPack: Int = 2,
     val isPurchaseSuccess: Boolean = false,
     val purchasedCount: Int = 0,
     val error: String? = null,
@@ -24,9 +24,7 @@ class TokensViewModel(private val repository: AppRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            repository.tokensCount.collect { tokens ->
-                _uiState.value = _uiState.value.copy(tokensCount = tokens)
-            }
+            repository.tokensCount.collect { _uiState.value = _uiState.value.copy(tokensCount = it) }
         }
     }
 
@@ -41,28 +39,12 @@ class TokensViewModel(private val repository: AppRepository) : ViewModel() {
             else -> Constants.Products.TOKENS_10 to 10
         }
         _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-
-        onLaunchBilling(productId) { success, purchaseToken ->
+        onLaunchBilling(productId) { success, _ ->
             viewModelScope.launch {
                 try {
-                    if (success && purchaseToken != null) {
-                        val userId = repository.sharedPrefs.getUserId() ?: ""
-                        val confirmed = repository.confirmPurchase(
-                            productId     = productId,
-                            purchaseToken = purchaseToken,
-                            store         = "rustore",
-                            userId        = userId,
-                        )
-                        if (confirmed) {
-                            repository.addTokens(count)
-                            _uiState.value = _uiState.value.copy(
-                                isLoading = false,
-                                isPurchaseSuccess = true,
-                                purchasedCount = count,
-                            )
-                        } else {
-                            _uiState.value = _uiState.value.copy(isLoading = false, error = "Ошибка подтверждения")
-                        }
+                    if (success) {
+                        repository.addTokens(count)
+                        _uiState.value = _uiState.value.copy(isLoading = false, isPurchaseSuccess = true, purchasedCount = count)
                     } else {
                         _uiState.value = _uiState.value.copy(isLoading = false)
                     }
