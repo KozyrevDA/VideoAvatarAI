@@ -38,33 +38,20 @@ jobs:
         id: build
         run: |
           set +e
-          ./gradlew :composeApp:assembleDebug \
-            --no-daemon --info \
-            --no-build-cache \
-            2>&1 | tee /tmp/build.log
+          ./gradlew :composeApp:assembleDebug --no-daemon --info --no-build-cache 2>&1 | tee /tmp/build.log
           BUILD_EXIT=${PIPESTATUS[0]}
           set -e
           echo "exit_code=$BUILD_EXIT" >> $GITHUB_OUTPUT
-
-          # Сохраняем лог в репо для чтения через API
           mkdir -p build-output
-          {
-            echo "=== BUILD EXIT CODE: $BUILD_EXIT ==="
-            echo ""
-            echo "=== ERRORS AND KEY LINES ==="
-            grep -E "error:|Error:|FAILURE|BUILD FAILED|Exception|Could not|Unresolved|e: file|> Task|> Could not" /tmp/build.log || echo "(no error lines found)"
-            echo ""
-            echo "=== LAST 100 LINES ==="
-            tail -100 /tmp/build.log
-            echo ""
-            echo "=== APK FILES ==="
-            find . -name "*.apk" 2>/dev/null | grep -v "build-tools" | grep -v "platforms" | grep -v "emulator" || echo "(no apk found)"
-          } > build-output/last-log.txt
-
+          echo "=== BUILD EXIT: $BUILD_EXIT ===" > build-output/last-log.txt
+          grep -E "error:|Error:|FAILURE|BUILD FAILED|Exception|Could not|Unresolved|> Task" /tmp/build.log >> build-output/last-log.txt || true
+          echo "=== LAST 150 LINES ===" >> build-output/last-log.txt
+          tail -150 /tmp/build.log >> build-output/last-log.txt
+          echo "=== APK FILES ===" >> build-output/last-log.txt
+          find . -name "*.apk" 2>/dev/null | grep -v build-tools | grep -v platforms | grep -v emulator >> build-output/last-log.txt || echo "(none)" >> build-output/last-log.txt
           git add build-output/
-          git commit -m "ci: build log (exit=$BUILD_EXIT)" --allow-empty || true
+          git commit -m "ci: build log exit=$BUILD_EXIT" --allow-empty || true
           git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:main || true
-
           exit $BUILD_EXIT
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
