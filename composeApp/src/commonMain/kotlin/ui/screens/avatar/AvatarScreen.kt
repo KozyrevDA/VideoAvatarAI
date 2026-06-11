@@ -36,7 +36,7 @@ fun AvatarScreen(
     val s = LocalStrings.current
     val uiState by viewModel.uiState.collectAsState()
     val showImagePicker = remember { mutableStateOf(false) }
-    val imagePicker = remember { getImagePicker() }
+    val imagePicker: ImagePicker? = remember { getImagePicker() }
 
     // ImagePicker composable — ждёт showPicker=true чтобы открыть галерею
     imagePicker?.PickImageFromGallery(
