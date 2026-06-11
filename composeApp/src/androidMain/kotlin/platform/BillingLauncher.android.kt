@@ -39,9 +39,9 @@ actual fun getBillingLauncher(): BillingLauncher? {
 
             private fun isDebugBuild(activity: Activity): Boolean {
                 return try {
-                    val flags = activity.packageManager
-                        .getPackageInfo(activity.packageName, 0).applicationInfo.flags
-                    (flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
+                    val appInfo = activity.packageManager
+                        .getApplicationInfo(activity.packageName, 0)
+                    (appInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0
                 } catch (_: Exception) { false }
             }
         }
