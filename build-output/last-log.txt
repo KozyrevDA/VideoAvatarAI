@@ -62,8 +62,8 @@ Type-safe project accessors is an incubating feature.
 > Task :composeApp:debugAssetsCopyForAGP NO-SOURCE
 > Task :composeApp:generateDebugAssets UP-TO-DATE
 > Task :composeApp:mergeDebugAssets
-> Task :composeApp:compressDebugAssets
 > Task :composeApp:processDebugManifestForPackage
+> Task :composeApp:compressDebugAssets
 > Task :composeApp:processDebugResources
 > Task :composeApp:l8DexDesugarLibDebug
 > Task :composeApp:checkDebugDuplicateClasses
@@ -83,8 +83,8 @@ w: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMai
 > Task :composeApp:mergeDebugJavaResource
 > Task :composeApp:dexBuilderDebug
 > Task :composeApp:mergeDebugJniLibFolders
-> Task :composeApp:mergeProjectDexDebug
 > Task :composeApp:mergeDebugNativeLibs
+> Task :composeApp:mergeProjectDexDebug
 > Task :composeApp:validateSigningDebug
 > Task :composeApp:writeDebugAppMetadata
 > Task :composeApp:writeDebugSigningConfigVersions
@@ -103,7 +103,7 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD SUCCESSFUL in 2m 56s
+BUILD SUCCESSFUL in 2m 58s
 41 actionable tasks: 41 executed
 === APKs ===
 ./composeApp/build/outputs/apk/debug/composeApp-debug.apk
