@@ -103,6 +103,7 @@ private val demoHistory = listOf(
 
 @Composable
 private fun HistoryRow(emoji: String, bg: Color, title: String, subtitle: String, status: String, onClick: () -> Unit) {
+    val s = i18n.LocalStrings.current
     val isReady = status == "ready"
     Row(
         modifier = Modifier.fillMaxWidth()
