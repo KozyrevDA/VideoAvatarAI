@@ -24,53 +24,74 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Cache Gradle deps only (NOT build outputs)
+      - name: Cache Gradle
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches/modules-2
             ~/.gradle/wrapper
             ~/.konan
-          key: gradle-deps-${{ hashFiles('**/libs.versions.toml','**/gradle-wrapper.properties') }}
-          restore-keys: gradle-deps-
+          key: gradle-${{ hashFiles('**/libs.versions.toml','**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
 
       - name: Setup
         run: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           chmod +x gradlew
 
-      - name: Build Debug APK
+      - name: Build + Locate APK
+        id: apk
         run: |
-          ./gradlew :composeApp:assembleDebug \
-            --no-daemon --stacktrace --rerun-tasks \
-            -Dorg.gradle.caching=false
+          # Собираем
+          ./gradlew :composeApp:assembleDebug --no-daemon --stacktrace \
+            -Dorg.gradle.caching=false --rerun-tasks
+
+          echo ""
+          echo "=== Build outputs tree ==="
+          find composeApp/build/outputs -type f 2>/dev/null | sort
+
+          echo ""
+          echo "=== All project APKs (excluding SDK) ==="
+          find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null \
+            | grep -v "build-tools" | grep -v "/platforms/" \
+            | grep -v "/emulator/" | sort
+
+          # Записываем путь
+          APK=$(find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null \
+            | grep -v "build-tools" | grep -v "/platforms/" \
+            | grep -v "/emulator/" | grep -i "debug" | head -1)
+
+          if [ -z "$APK" ]; then
+            # Любой APK в workspace
+            APK=$(find "$GITHUB_WORKSPACE" -name "*.apk" 2>/dev/null \
+              | grep -v "build-tools" | grep -v "/platforms/" | head -1)
+          fi
+
+          echo ""
+          echo "Selected APK: $APK"
+          echo "Size: $(du -h "$APK" 2>/dev/null | cut -f1)"
+          echo "apk_path=$APK" >> $GITHUB_OUTPUT
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
-
-      - name: Show build outputs
-        run: |
-          echo "=== composeApp/build/outputs ==="
-          find composeApp/build/outputs -type f 2>/dev/null | sort || echo "(пусто)"
-          echo ""
-          echo "=== All APKs in project ==="
-          find . -name "*.apk" -not -path "*/build-tools/*" -not -path "*/platforms/*" 2>/dev/null
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: composeApp/build/outputs/apk/debug/*.apk
+          path: ${{ steps.apk.outputs.apk_path }}
           if-no-files-found: error
           retention-days: 30
 
       - name: Summary
         if: always()
         run: |
+          APK="${{ steps.apk.outputs.apk_path }}"
           echo "## APK Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          APK=$(find composeApp/build/outputs/apk -name "*.apk" 2>/dev/null | head -1)
-          if [ -n "$APK" ]; then
-            echo "✅ $(du -h $APK | cut -f1) — $(basename $APK)" >> $GITHUB_STEP_SUMMARY
-            echo "Скачать: Artifacts ↓" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$APK" ] && [ -f "$APK" ]; then
+            SIZE=$(du -h "$APK" | cut -f1)
+            echo "✅ $SIZE — $(basename $APK)" >> $GITHUB_STEP_SUMMARY
+            echo "Path: $APK" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ APK не создан" >> $GITHUB_STEP_SUMMARY
+            echo "❌ APK не создан. Path: $APK" >> $GITHUB_STEP_SUMMARY
           fi
+          echo "Скачать: Artifacts ↓" >> $GITHUB_STEP_SUMMARY
