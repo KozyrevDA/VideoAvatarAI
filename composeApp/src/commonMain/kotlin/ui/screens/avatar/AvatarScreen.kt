@@ -41,7 +41,7 @@ fun AvatarScreen(
     // ImagePicker composable — ждёт showPicker=true чтобы открыть галерею
     imagePicker?.PickImageFromGallery(
         showPicker = showImagePicker,
-        onPicked   = { bitmap: ImageBitmap ->
+        onPicked   = { bitmap ->
             val base64 = bitmap.toBase64()
             viewModel.onPhotoSelected(base64)
         },
