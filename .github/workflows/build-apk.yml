@@ -33,37 +33,47 @@ jobs:
       - name: Build Debug APK
         run: |
           ./gradlew :composeApp:assembleDebug \
-            --info --no-daemon --no-build-cache --rerun-tasks \
-            2>&1 | tee /tmp/full.log
-          echo ""
-          echo "=== APK lines in log ==="
-          grep -iE "\.apk|packaging apk|wrote|BUILD SUCCESS|BUILD FAILED" /tmp/full.log | head -20
+            --stacktrace --no-daemon 2>&1 > build-output.log
+          echo "Exit: $?"
+          echo "Log size: $(wc -c < build-output.log) bytes"
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Find APK from log or filesystem
+      - name: Diagnose and find APK
         run: |
-          # Приоритет 1: путь из Gradle лога
-          APK=$(grep -oE '[^ "]+\.apk' /tmp/full.log 2>/dev/null | grep -v "proto\|unsigned" | head -1)
+          {
+            echo "=== BUILD LOG (last 100 lines) ==="
+            tail -100 build-output.log
+            echo ""
+            echo "=== composeApp/build directory ==="
+            find composeApp/build -type f 2>/dev/null | sort | head -50
+            echo ""
+            echo "=== APK search ==="
+            find composeApp/build -name "*.apk" 2>/dev/null
+            find composeApp/build -name "*.aar" 2>/dev/null
+          } > build-diag.txt
+          cat build-diag.txt
 
-          # Приоритет 2: поиск в проекте
-          if [ -z "$APK" ] || [ ! -f "$APK" ]; then
-            APK=$(find "$GITHUB_WORKSPACE/composeApp" -name "*.apk" \
-              ! -name "*unsigned*" 2>/dev/null | head -1)
-          fi
+      - name: Push diagnostic to repo
+        run: |
+          git config user.email "bot@nla.org"
+          git config user.name "CI Bot"
+          git add build-output.log build-diag.txt
+          git commit -m "CI: build diagnostic [skip ci]" --allow-empty
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-          if [ -z "$APK" ] || [ ! -f "$APK" ]; then
-            echo "❌ APK НЕ НАЙДЕН"
-            echo "--- build/outputs structure ---"
-            find "$GITHUB_WORKSPACE/composeApp/build" -type d 2>/dev/null | head -20
-            echo "--- last 50 lines of build log ---"
-            tail -50 /tmp/full.log
+      - name: Copy APK
+        run: |
+          APK=$(find composeApp/build -name "*.apk" 2>/dev/null | head -1)
+          if [ -z "$APK" ]; then
+            echo "❌ APK не найден"
+            cat build-diag.txt
             exit 1
           fi
-
-          echo "✅ APK: $APK"
-          echo "   Size: $(du -h "$APK" | cut -f1)"
           cp "$APK" NeurosetVideo-debug.apk
+          echo "✅ $(du -h NeurosetVideo-debug.apk | cut -f1)"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -71,25 +81,3 @@ jobs:
           name: NeurosetVideo-debug
           path: NeurosetVideo-debug.apk
           retention-days: 30
-
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: /tmp/full.log
-          retention-days: 3
-
-      - name: Summary
-        if: always()
-        run: |
-          echo "## Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          if [ -f NeurosetVideo-debug.apk ]; then
-            echo "✅ **NeurosetVideo-debug.apk** — $(du -h NeurosetVideo-debug.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
-            echo "⬇️ **Artifacts** ↓ внизу страницы" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ APK не создан" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -50 /tmp/full.log >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "no log" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
