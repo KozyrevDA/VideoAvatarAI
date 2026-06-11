@@ -45,10 +45,23 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Locate and rename APK
+      - name: Find APK
         run: |
-          APK=$(find composeApp/build/outputs/apk -name "*.apk" | head -1)
-          echo "Found: $APK ($(du -h "$APK" | cut -f1))"
+          echo "=== Ищем APK файлы ==="
+          find composeApp/build -name "*.apk" 2>/dev/null || echo "Нет .apk в composeApp/build"
+          echo ""
+          echo "=== Структура composeApp/build/outputs ==="
+          find composeApp/build/outputs -type f 2>/dev/null | head -30 || echo "outputs пустой"
+
+      - name: Copy APK
+        run: |
+          # Ищем APK в любом месте
+          APK=$(find composeApp/build -name "*.apk" 2>/dev/null | head -1)
+          if [ -z "$APK" ]; then
+            echo "❌ APK не найден!"
+            exit 1
+          fi
+          echo "✅ APK найден: $APK ($(du -h "$APK" | cut -f1))"
           cp "$APK" NeurosetVideo-debug.apk
 
       - name: Upload Debug APK
@@ -61,13 +74,13 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Нейросеть Видео — Debug APK" >> $GITHUB_STEP_SUMMARY
+          echo "## Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
           if [ -f NeurosetVideo-debug.apk ]; then
             echo "✅ **NeurosetVideo-debug.apk** — $(du -h NeurosetVideo-debug.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
-            echo "⬇️ Скачать → раздел **Artifacts** внизу страницы" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ **Artifacts** ↓ внизу страницы" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ APK не найден" >> $GITHUB_STEP_SUMMARY
-            find composeApp/build -name "*.apk" 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
+            echo "❌ APK не найден. Дерево build/outputs:" >> $GITHUB_STEP_SUMMARY
+            find composeApp/build/outputs -type f 2>/dev/null >> $GITHUB_STEP_SUMMARY || echo "пусто" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Decode keystore
@@ -96,8 +109,8 @@ jobs:
       - name: Upload Release APK
         if: steps.ks.outputs.found == 'true'
         run: |
-          APK=$(find composeApp/build/outputs/apk/release -name "*.apk" 2>/dev/null | head -1)
-          [ -n "$APK" ] && cp "$APK" NeurosetVideo-release.apk || echo "No release APK"
+          APK=$(find composeApp/build -name "*release*.apk" 2>/dev/null | head -1)
+          [ -n "$APK" ] && cp "$APK" NeurosetVideo-release.apk && echo "Release: $APK" || echo "No release APK"
 
       - name: Upload Release artifact
         if: steps.ks.outputs.found == 'true'
