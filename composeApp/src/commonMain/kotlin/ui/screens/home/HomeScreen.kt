@@ -149,8 +149,8 @@ private fun SmallCard(emoji: String, title: String, subtitle: String, modifier: 
         Column {
             Box(modifier = Modifier.size(32.dp).clip(RoundedCornerShape(10.dp)).background(PrimaryContainer), contentAlignment = Alignment.Center) { Text(emoji, fontSize = 16.sp) }
             Spacer(Modifier.height(8.dp))
-            Text(title, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = OnBackground)
-            Text(subtitle, fontSize = 9.sp, color = TextTertiary)
+            Text(title, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = OnBackground, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(subtitle, fontSize = 9.sp, color = TextTertiary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
 }
