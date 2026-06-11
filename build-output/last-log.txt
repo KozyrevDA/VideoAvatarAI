@@ -57,13 +57,13 @@ Type-safe project accessors is an incubating feature.
 > Task :composeApp:processDebugManifest
 > Task :composeApp:javaPreCompileDebug
 > Task :composeApp:mergeDebugShaders
-> Task :composeApp:processDebugManifestForPackage
 > Task :composeApp:compileDebugShaders NO-SOURCE
 > Task :composeApp:copyDebugComposeResourcesToAndroidAssets
 > Task :composeApp:debugAssetsCopyForAGP NO-SOURCE
 > Task :composeApp:generateDebugAssets UP-TO-DATE
 > Task :composeApp:mergeDebugAssets
 > Task :composeApp:compressDebugAssets
+> Task :composeApp:processDebugManifestForPackage
 > Task :composeApp:processDebugResources
 > Task :composeApp:l8DexDesugarLibDebug
 > Task :composeApp:checkDebugDuplicateClasses
@@ -87,11 +87,11 @@ w: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMai
 > Task :composeApp:mergeDebugNativeLibs
 > Task :composeApp:validateSigningDebug
 > Task :composeApp:writeDebugAppMetadata
+> Task :composeApp:writeDebugSigningConfigVersions
 
 > Task :composeApp:stripDebugDebugSymbols
 Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so.
 
-> Task :composeApp:writeDebugSigningConfigVersions
 > Task :composeApp:packageDebug
 > Task :composeApp:createDebugApkListingFileRedirect
 > Task :composeApp:assembleDebug
