@@ -12,19 +12,12 @@ Execution failed for task ':composeApp:compileDebugKotlinAndroid'.
 
 * Exception is:
 === KOTLIN ERRORS (e:) ===
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:22 Unresolved reference 'ImagePicker'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:48 Unresolved reference 'getImagePicker'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:42:18 Unresolved reference 'PickImageFromGallery'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:44:24 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:45:33 Unresolved reference 'toBase64'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:38 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:38 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:42 Cannot infer type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:40:48 Unresolved reference 'getImagePicker'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:46:33 Unresolved reference 'toBase64'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:29:1 This annotation is not repeatable.
 === TASK FAILURES ===
 > Task :composeApp:compileDebugKotlinAndroid FAILED
-BUILD FAILED in 2m 33s
+BUILD FAILED in 2m 31s
 === LAST 150 LINES ===
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
@@ -174,7 +167,7 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD FAILED in 2m 33s
+BUILD FAILED in 2m 31s
 27 actionable tasks: 27 executed
 === APKs ===
 (none)
