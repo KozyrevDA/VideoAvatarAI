@@ -12,7 +12,6 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        // JetBrains Compose dev repo (нужен для CMP betas/alphas)
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
     }
 }
@@ -27,12 +26,14 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        // JetBrains: navigation-compose, lifecycle, etc.
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        // RuStore SDK
-        maven { url = uri("https://artifactory.rustore.ru/artifactory/projects") }
-        // JitPack fallback
-        maven { url = uri("https://jitpack.io") }
+        // RuStore — только ru.rustore.sdk зависимости
+        maven {
+            url = uri("https://artifactory.rustore.ru/artifactory/projects")
+            mavenContent {
+                includeGroupAndSubgroups("ru.rustore")
+            }
+        }
     }
 }
 
