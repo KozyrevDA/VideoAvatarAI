@@ -3,7 +3,6 @@ package billing
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
-import com.android.billingclient.api.ProductType
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.nla.videoavataraii.app.AndroidApp
 import kotlin.coroutines.resume
@@ -29,7 +28,7 @@ class GooglePlayBillingProvider : BillingProvider {
 
     override suspend fun purchase(activity: Activity, productId: String): BillingResult {
         return try {
-            val productType = if (productId.startsWith("sub_")) ProductType.SUBS else ProductType.INAPP
+            val productType = if (productId.startsWith("sub_")) BillingClient.ProductType.SUBS else BillingClient.ProductType.INAPP
             val details = queryDetails(productId, productType) ?: return BillingResult.Error("Product not found")
             val flowParams = buildFlow(details, productType) ?: return BillingResult.Error("Build flow error")
 
@@ -74,7 +73,7 @@ class GooglePlayBillingProvider : BillingProvider {
     }
 
     private fun buildFlow(d: ProductDetails, type: String): BillingFlowParams? {
-        return if (type == ProductType.SUBS) {
+        return if (type == BillingClient.ProductType.SUBS) {
             val token = d.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return null
             BillingFlowParams.newBuilder().setProductDetailsParamsList(listOf(
                 BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(d).setOfferToken(token).build()
