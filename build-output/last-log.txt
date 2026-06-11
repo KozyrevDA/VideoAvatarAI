@@ -12,38 +12,9 @@ Execution failed for task ':composeApp:compileDebugKotlinAndroid'.
 
 * Exception is:
 === KOTLIN ERRORS (e:) ===
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/ImagePicker.android.kt:56:12 'actual fun getImagePicker(): ImagePicker' has no corresponding expected declaration
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:8:8 Unresolved reference 'ru'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:9:8 Unresolved reference 'ru'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:31:13 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:33:41 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:33:70 Unresolved reference 'isAvailable'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:39:13 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:40:34 Unresolved reference 'PurchaseParams'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:41:41 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:42:40 Unresolved reference 'purchaseId'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:42:61 Unresolved reference 'subscriptionToken'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:48:41 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:49:55 Unresolved reference 'message'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:66:65 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:66:87 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:124:28 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:5:8 Unresolved reference 'ru'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:6:8 Unresolved reference 'ru'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:27:9 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:40:9 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:42:26 Unresolved reference 'PurchaseParams'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:44:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:47:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:62:9 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:64:26 Unresolved reference 'PurchaseParams'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:69:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:81:9 Unresolved reference 'RuStorePayClient'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:83:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:84:28 Unresolved reference 'isAvailable'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:87:42 Unresolved reference 'cause'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:90:37 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/org/nla/videoavataraii/billing/RuStorePayProvider.kt:91:41 Unresolved reference 'message'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:31:65 Unresolved reference 'ProductType'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:31:87 Unresolved reference 'ProductType'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:76:28 Unresolved reference 'ProductType'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/navigation/AppNavGraph.kt:66:21 No parameter with name 'prevScreen' found.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:23 Cannot infer type for this parameter. Please specify it explicitly.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:34 Unresolved reference 'getImagePicker'.
@@ -115,7 +86,7 @@ e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMai
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:108:26 Unresolved reference 's'.
 === TASK FAILURES ===
 > Task :composeApp:compileDebugKotlinAndroid FAILED
-BUILD FAILED in 2m 39s
+BUILD FAILED in 2m 30s
 === LAST 150 LINES ===
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
@@ -265,7 +236,7 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD FAILED in 2m 39s
-27 actionable tasks: 27 executed
+BUILD FAILED in 2m 30s
+34 actionable tasks: 34 executed
 === APKs ===
 (none)
