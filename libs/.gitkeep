@@ -1,0 +1,7 @@
+# Положи сюда RuStore AAR файлы:
+# rustore-pay.aar
+# rustore-core.aar (если требуется)
+# rustore-utils.aar (если требуется)
+#
+# Скачать: https://www.rustore.ru/help/sdk/pay/kotlin-java/latest/
+# Или найти в Gradle кэше: find ~/.gradle/caches -name '*rustore*pay*.aar'
