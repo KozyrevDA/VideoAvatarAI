@@ -3,6 +3,7 @@ package billing
 import android.app.Activity
 import android.content.Context
 import com.android.billingclient.api.*
+import com.android.billingclient.api.ProductType
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.nla.videoavataraii.app.AndroidApp
 import kotlin.coroutines.resume
