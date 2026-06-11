@@ -19,9 +19,7 @@ data class TextPostUiState(
     val error: String? = null,
 )
 
-class TextPostViewModel(
-    private val repository: AppRepository,
-) : ViewModel() {
+class TextPostViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TextPostUiState())
     val uiState = _uiState.asStateFlow()
@@ -29,41 +27,23 @@ class TextPostViewModel(
     fun onTopicChange(topic: String) {
         _uiState.value = _uiState.value.copy(topic = topic, error = null)
     }
-
     fun onPlatformSelect(platform: String) {
         _uiState.value = _uiState.value.copy(platform = platform)
     }
-
     fun onToneSelect(tone: TextTone) {
         _uiState.value = _uiState.value.copy(tone = tone)
     }
-
-    fun generate() {
-        val state = _uiState.value
-        if (state.topic.isBlank()) {
-            _uiState.value = state.copy(error = "Введи тему поста")
-            return
-        }
-        viewModelScope.launch {
-            _uiState.value = state.copy(isLoading = true, error = null)
-            repository.generateTextPost(
-                GenerateTextPostRequest(
-                    topic = state.topic,
-                    platform = state.platform,
-                    tone = state.tone,
-                )
-            ).onSuccess { result ->
-                _uiState.value = _uiState.value.copy(isLoading = false, result = result)
-            }.onFailure { e ->
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    error = e.message ?: "Ошибка генерации",
-                )
-            }
-        }
-    }
-}
-
     fun clearResult() {
         _uiState.value = _uiState.value.copy(result = null, error = null)
     }
+    fun generate() {
+        val state = _uiState.value
+        if (state.topic.isBlank()) { _uiState.value = state.copy(error = "Введи тему поста"); return }
+        viewModelScope.launch {
+            _uiState.value = state.copy(isLoading = true, error = null)
+            repository.generateTextPost(GenerateTextPostRequest(state.topic, state.platform, state.tone))
+                .onSuccess { _uiState.value = _uiState.value.copy(isLoading = false, result = it) }
+                .onFailure { _uiState.value = _uiState.value.copy(isLoading = false, error = it.message ?: "Ошибка") }
+        }
+    }
+}
