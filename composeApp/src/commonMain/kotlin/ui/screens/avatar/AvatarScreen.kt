@@ -1,6 +1,7 @@
 package ui.screens.avatar
 
-import ImagePicker
+import utils.ImagePicker
+import utils.getImagePicker
 import utils.toBase64
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
