@@ -63,7 +63,7 @@ fun AppNavGraph(
             Surface(color = MaterialTheme.colorScheme.background) {
                 PaywallScreen(
                     navigationActions = navigationActions,
-                    prevScreen = dest.prevScreen,
+                    source = dest.prevScreen,
                 )
             }
         }
