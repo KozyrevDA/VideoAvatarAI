@@ -53,6 +53,8 @@ fun OnboardingScreen(
     var selectedRole by remember { mutableStateOf(-1) }
     val selectedPains = remember { mutableStateListOf<Int>() }
     var visible by remember { mutableStateOf(false) }
+    val showImagePicker = remember { mutableStateOf(false) }
+    var photoSelected by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { visible = true }
 
