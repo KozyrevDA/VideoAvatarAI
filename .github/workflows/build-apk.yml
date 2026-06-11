@@ -40,60 +40,80 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: List available assemble tasks
-        run: |
-          ./gradlew :composeApp:tasks --all --no-daemon 2>&1 \
-            | grep -iE "assemble|package|apk|bundle" \
-            | tee /tmp/tasks.txt
-          echo "---"
-          cat /tmp/tasks.txt
-
       - name: Build Debug APK
         run: |
-          ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon 2>&1 | tee /tmp/build.log
-          echo "EXIT=${PIPESTATUS[0]}"
+          ./gradlew :composeApp:assembleDebug --info --no-daemon 2>&1 \
+            | grep -E "APK|apk|Task.*:composeApp|OUTPUT|Packing|Wrote|BUILD|FAIL" \
+            | tee /tmp/build-key.log
+          echo ""
+          echo "--- Full task output ---"
+          cat /tmp/build-key.log
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Diagnose build output
+      - name: Find APK in project only
+        id: apk_path
         run: |
-          {
-            echo "=== EXIT CODE ==="
-            cat /tmp/build.log | grep -E "BUILD|FAIL|SUCCESS" | tail -5
-            echo ""
-            echo "=== composeApp/build tree ==="
-            find composeApp/build -type f 2>/dev/null | head -50 || echo "пусто"
-            echo ""
-            echo "=== All APK files ==="
-            find / -name "*.apk" 2>/dev/null | grep -v proc | head -20 || echo "нет"
-            echo ""
-            echo "=== Gradle outputs dir ==="
-            ls -la composeApp/build/outputs/ 2>/dev/null || echo "не существует"
-          } | tee /tmp/diag.txt
-          cat /tmp/diag.txt
+          echo "=== APK в нашем проекте ==="
+          find "$GITHUB_WORKSPACE" -name "*.apk" \
+            ! -path "*/.gradle/*" \
+            ! -path "*/sdk/*" \
+            ! -path "*/android-sdk/*" \
+            2>/dev/null | tee /tmp/apk-list.txt
+
+          echo "=== Дерево outputs ==="
+          find "$GITHUB_WORKSPACE/composeApp/build" -type f 2>/dev/null \
+            | grep -v ".gradle\|kotlin\|classes\|java\|ksp\|generated" \
+            | head -30 | tee -a /tmp/apk-list.txt
+
+          # Выбираем первый правильный APK
+          APK=$(cat /tmp/apk-list.txt | grep "\.apk$" | head -1)
+          echo "apk=$APK" >> $GITHUB_OUTPUT
+          echo "Выбранный APK: '$APK'"
 
       - name: Upload diagnostic
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-diagnostic
+          name: diagnostic
           path: |
-            /tmp/build.log
-            /tmp/diag.txt
-            /tmp/tasks.txt
+            /tmp/build-key.log
+            /tmp/apk-list.txt
           retention-days: 7
 
-      - name: Copy and upload APK
+      - name: Copy APK
         run: |
-          APK=$(find / -name "*.apk" 2>/dev/null | grep -v proc | head -1)
-          if [ -z "$APK" ]; then
-            echo "APK не найден вообще нигде!"
+          APK="${{ steps.apk_path.outputs.apk }}"
+          if [ -z "$APK" ] || [ ! -f "$APK" ]; then
+            echo "❌ Наш APK не найден в workspace!"
+            echo "Полный список .apk на сервере:"
+            find / -name "*.apk" 2>/dev/null | grep -v proc | head -30
             exit 1
           fi
-          echo "APK: $APK"
+          SIZE=$(du -h "$APK" | cut -f1)
+          echo "✅ APK: $APK ($SIZE)"
           cp "$APK" NeurosetVideo-debug.apk
 
-      - name: Upload APK
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
           path: NeurosetVideo-debug.apk
           retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Нейросеть Видео — Build Result" >> $GITHUB_STEP_SUMMARY
+          if [ -f NeurosetVideo-debug.apk ]; then
+            SIZE=$(du -h NeurosetVideo-debug.apk | cut -f1)
+            echo "✅ **NeurosetVideo-debug.apk** — $SIZE" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ Artifacts ↓ внизу страницы" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ APK не найден" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**APK поиск:**" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat /tmp/apk-list.txt >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
