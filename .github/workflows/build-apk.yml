@@ -30,60 +30,34 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      # Без кэша Gradle — чисто, без UP-TO-DATE
-      - name: Build Debug APK (no cache)
-        run: |
-          ./gradlew :composeApp:assembleDebug \
-            --no-daemon \
-            --no-build-cache \
-            --rerun-tasks \
-            --stacktrace 2>&1 | tail -50
+      - name: Build Debug APK
+        run: ./gradlew :composeApp:assembleDebug --no-daemon --stacktrace
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Show build output
+      - name: List APK output
         run: |
-          echo "=== composeApp/build/outputs ==="
-          find composeApp/build/outputs -type f 2>/dev/null || echo "ПУСТО"
-          echo ""
-          echo "=== Все APK в workspace ==="
-          find "$GITHUB_WORKSPACE" -name "*.apk" \
-            ! -path "*sdk*" ! -path "*/.gradle/*" 2>/dev/null || echo "ПУСТО"
+          echo "Содержимое composeApp/build/outputs/apk/:"
+          find composeApp/build/outputs/apk -type f 2>/dev/null || echo "Директория не найдена"
 
-      - name: Upload APK
-        run: |
-          APK=$(find "$GITHUB_WORKSPACE" -name "*.apk" \
-            ! -path "*sdk*" ! -path "*/.gradle/*" 2>/dev/null | head -1)
-
-          if [ -z "$APK" ]; then
-            echo "❌ APK не найден в workspace"
-            echo "Содержимое composeApp/build:"
-            find composeApp/build -type f 2>/dev/null | head -30
-            exit 1
-          fi
-
-          SIZE=$(du -h "$APK" | cut -f1)
-          echo "✅ APK: $APK ($SIZE)"
-          cp "$APK" NeurosetVideo-debug.apk
-
-      - name: Upload Debug APK artifact
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: NeurosetVideo-debug.apk
+          path: composeApp/build/outputs/apk/**/*.apk
+          if-no-files-found: error
           retention-days: 30
 
       - name: Summary
         if: always()
         run: |
-          echo "## Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          if [ -f NeurosetVideo-debug.apk ]; then
-            echo "✅ **$(du -h NeurosetVideo-debug.apk | cut -f1)**  NeurosetVideo-debug.apk" >> $GITHUB_STEP_SUMMARY
+          echo "## Нейросеть Видео — APK" >> $GITHUB_STEP_SUMMARY
+          APK=$(find composeApp/build/outputs/apk -name "*.apk" 2>/dev/null | head -1)
+          if [ -n "$APK" ]; then
+            SIZE=$(du -h "$APK" | cut -f1)
+            echo "✅ **$SIZE** — $(basename $APK)" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "⬇️ **Artifacts** внизу страницы" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ Скачать → **Artifacts** внизу страницы" >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ APK не создан" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            find composeApp/build -type f 2>/dev/null | head -30 >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
           fi
