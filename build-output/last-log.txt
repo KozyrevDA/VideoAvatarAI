@@ -12,81 +12,22 @@ Execution failed for task ':composeApp:compileDebugKotlinAndroid'.
 
 * Exception is:
 === KOTLIN ERRORS (e:) ===
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:31:65 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:31:87 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:76:28 Unresolved reference 'ProductType'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/navigation/AppNavGraph.kt:66:21 No parameter with name 'prevScreen' found.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:6:38 Unresolved reference 'ProductType'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:32:65 Unresolved reference 'ProductType'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:32:87 Unresolved reference 'ProductType'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/androidMain/kotlin/billing/BillingProvider.android.kt:77:28 Unresolved reference 'ProductType'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:23 Cannot infer type for this parameter. Please specify it explicitly.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:39:34 Unresolved reference 'getImagePicker'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:42:18 Unresolved reference 'PickImageFromGallery'.
+e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:44:24 Cannot infer type for this parameter. Please specify it explicitly.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:45:33 Unresolved reference 'toBase64'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:38 Cannot infer type for this parameter. Please specify it explicitly.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:38 Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/avatar/AvatarScreen.kt:70:42 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/history/HistoryScreen.kt:127:22 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/history/HistoryScreen.kt:133:22 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:9 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:9 Not enough information to infer type argument for 'T'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:16 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:16 Not enough information to infer type argument for 'C'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:16 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:34 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:46 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:46 Not enough information to infer type argument for 'C'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:67 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:82 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:82 Not enough information to infer type argument for 'C'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:102 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:115 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:115 Not enough information to infer type argument for 'C'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:137 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:153 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:153 Not enough information to infer type argument for 'T'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:205 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:205 Not enough information to infer type argument for 'T'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:215 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:215 Function 'component1()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:183:215 Function 'component2()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:184:38 Function 'component1()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:184:38 Function 'component2()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:184:38 Function 'component3()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/home/HomeScreen.kt:186:104 Unresolved reference 'action'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/onboarding/OnboardingScreen.kt:95:39 Unresolved reference 'showImagePicker'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/onboarding/OnboardingScreen.kt:96:37 Unresolved reference 'photoSelected'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/paywall/PaywallViewModel.kt:40:52 Unresolved reference 'confirmPurchase'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/result/ResultScreen.kt:36:5 Argument type mismatch: actual type is 'kotlin.Unit', but 'org.koin.core.parameter.ParametersHolder' was expected.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/result/ResultScreen.kt:36:26 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/result/ResultScreen.kt:36:34 Unresolved reference 'parametersOf'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/result/ResultScreen.kt:63:67 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/textpost/TextPostScreen.kt:117:189 Unresolved reference 'clearResult'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/textpost/TextPostViewModel.kt:68:9 Unresolved reference '_uiState'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/textpost/TextPostViewModel.kt:68:26 Unresolved reference '_uiState'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/tokens/TokensScreen.kt:85:114 No value passed for parameter 'onLaunchBilling'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/tokens/TokensViewModel.kt:50:52 Unresolved reference 'confirmPurchase'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:34:5 Argument type mismatch: actual type is 'kotlin.Unit', but 'org.koin.core.parameter.ParametersHolder' was expected.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:34:26 @Composable invocations can only happen from the context of a @Composable function
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:34:34 Unresolved reference 'parametersOf'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:45:22 Unresolved reference 's'.
 e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:59:48 The API of this layout is experimental and is likely to change in the future.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:69:18 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:17 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:17 Not enough information to infer type argument for 'T'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:24 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:29 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:29 Not enough information to infer type argument for 'B'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:32 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:62 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:62 Not enough information to infer type argument for 'B'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:65 Unresolved reference 's'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:91 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:91 Not enough information to infer type argument for 'T'.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:101 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:101 Function 'component1()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:72:101 Function 'component2()' is ambiguous for this expression: 
-e: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/composeApp/src/commonMain/kotlin/ui/screens/translate/TranslateScreen.kt:108:26 Unresolved reference 's'.
 === TASK FAILURES ===
 > Task :composeApp:compileDebugKotlinAndroid FAILED
-BUILD FAILED in 2m 30s
+BUILD FAILED in 2m 37s
 === LAST 150 LINES ===
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
@@ -236,7 +177,7 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD FAILED in 2m 30s
-34 actionable tasks: 34 executed
+BUILD FAILED in 2m 37s
+27 actionable tasks: 27 executed
 === APKs ===
 (none)
