@@ -44,25 +44,11 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
 
-      - name: Find APK (search entire filesystem like Run#25)
+      - name: Locate and rename APK
         run: |
-          echo "=== Ищем APK по всей ФС ==="
-          ALL=$(find / -name "*.apk" 2>/dev/null | grep -v proc)
-          echo "$ALL"
-
-          echo ""
-          echo "=== composeApp/build tree ==="
-          find composeApp/build -type f 2>/dev/null | sort | head -50 || echo "пусто"
-
-          # Копируем первый найденный APK
-          APK=$(echo "$ALL" | head -1)
-          if [ -z "$APK" ]; then
-            echo "❌ APK не найден нигде"
-            exit 1
-          fi
-          SIZE=$(du -h "$APK" | cut -f1)
-          echo ""
-          echo "✅ APK: $APK ($SIZE)"
+          APK=$(find composeApp/build/outputs/apk/debug -name "*.apk" | head -1)
+          echo "APK path: $APK"
+          echo "APK size: $(du -h "$APK" | cut -f1)"
           cp "$APK" NeurosetVideo-debug.apk
 
       - name: Upload Debug APK
@@ -73,13 +59,30 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Build Release APK
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/release.keystore
+          ./gradlew :composeApp:assembleRelease --no-daemon --stacktrace
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeurosetVideo-release
+          path: composeApp/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Summary
         if: always()
         run: |
-          echo "## 📱 Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
-          if [ -f NeurosetVideo-debug.apk ]; then
-            echo "✅ $(du -h NeurosetVideo-debug.apk | cut -f1) — NeurosetVideo-debug.apk" >> $GITHUB_STEP_SUMMARY
-            echo "⬇️ Artifacts ↓" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ APK не создан" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "## APK Нейросеть Видео" >> $GITHUB_STEP_SUMMARY
+          find composeApp/build/outputs/apk -name "*.apk" 2>/dev/null | while read f; do
+            echo "- $(basename $f): $(du -h $f | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          done
