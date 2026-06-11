@@ -29,7 +29,7 @@ class PaywallViewModel(private val repository: AppRepository) : ViewModel() {
                         else Constants.Products.SUB_MONTHLY
         _uiState.value = _uiState.value.copy(isLoading = true, error = null)
 
-        onLaunchBilling(productId) { success, _ ->
+        onLaunchBilling(productId) { success, errorOrToken ->
             viewModelScope.launch {
                 try {
                     if (success) {
@@ -37,7 +37,9 @@ class PaywallViewModel(private val repository: AppRepository) : ViewModel() {
                         repository.addTokens(5)
                         _uiState.value = _uiState.value.copy(isLoading = false, isPurchaseSuccess = true)
                     } else {
-                        _uiState.value = _uiState.value.copy(isLoading = false)
+                        // Показываем ошибку если она есть (не просто отмена)
+                        val errorMsg = if (errorOrToken != null && errorOrToken != "null") errorOrToken else null
+                        _uiState.value = _uiState.value.copy(isLoading = false, error = errorMsg)
                     }
                 } catch (e: Exception) {
                     _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
