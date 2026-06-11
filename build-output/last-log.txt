@@ -1,43 +1,205 @@
-=== BUILD EXIT: 0 ===
-> Task :help
+=== BUILD EXIT: 1 ===
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{373} MaxSize{400}, CacheStats{hitCount=100, missCount=375, loadSuccessCount=374, loadExceptionCount=0, totalLoadTime=110483193, evictionCount=1} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{399} MaxSize{400}, CacheStats{hitCount=100, missCount=441, loadSuccessCount=440, loadExceptionCount=0, totalLoadTime=142248373, evictionCount=41} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=100, missCount=482, loadSuccessCount=481, loadExceptionCount=0, totalLoadTime=145168634, evictionCount=81} 
+> Task :composeApp:preBuild UP-TO-DATE
+> Task :composeApp:preDebugBuild UP-TO-DATE
+> Task :composeApp:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :composeApp:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :composeApp:convertXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :composeApp:copyNonXmlValueResourcesForAndroidMain NO-SOURCE
+> Task :composeApp:prepareComposeResourcesTaskForAndroidMain NO-SOURCE
+> Task :composeApp:generateResourceAccessorsForAndroidMain NO-SOURCE
+> Task :composeApp:convertXmlValueResourcesForCommonMain NO-SOURCE
+> Task :composeApp:copyNonXmlValueResourcesForCommonMain NO-SOURCE
+> Task :composeApp:prepareComposeResourcesTaskForCommonMain NO-SOURCE
+> Task :composeApp:generateResourceAccessorsForCommonMain NO-SOURCE
+> Task :composeApp:generateActualResourceCollectorsForAndroidMain
+> Task :composeApp:generateComposeResClass
+> Task :composeApp:generateDebugBuildConfig
+> Task :composeApp:generateExpectResourceCollectorsForCommonMain
+> Task :composeApp:convertXmlValueResourcesForAndroidDebug NO-SOURCE
+> Task :composeApp:copyNonXmlValueResourcesForAndroidDebug NO-SOURCE
+> Task :composeApp:prepareComposeResourcesTaskForAndroidDebug NO-SOURCE
+> Task :composeApp:generateResourceAccessorsForAndroidDebug NO-SOURCE
+> Task :composeApp:checkDebugAarMetadata
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=100, missCount=522, loadSuccessCount=521, loadExceptionCount=0, totalLoadTime=148290545, evictionCount=121} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=100, missCount=562, loadSuccessCount=561, loadExceptionCount=0, totalLoadTime=151178154, evictionCount=161} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=100, missCount=602, loadSuccessCount=601, loadExceptionCount=0, totalLoadTime=154006686, evictionCount=201} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=100, missCount=642, loadSuccessCount=641, loadExceptionCount=0, totalLoadTime=157070186, evictionCount=241} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{367} MaxSize{400}, CacheStats{hitCount=0, missCount=367, loadSuccessCount=368, loadExceptionCount=0, totalLoadTime=52650827, evictionCount=1} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=101, missCount=682, loadSuccessCount=681, loadExceptionCount=0, totalLoadTime=159326586, evictionCount=281} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=101, missCount=722, loadSuccessCount=721, loadExceptionCount=0, totalLoadTime=163102725, evictionCount=321} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=101, missCount=762, loadSuccessCount=761, loadExceptionCount=0, totalLoadTime=166639767, evictionCount=361} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=440, loadSuccessCount=441, loadExceptionCount=0, totalLoadTime=57102257, evictionCount=41} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=101, missCount=802, loadSuccessCount=801, loadExceptionCount=0, totalLoadTime=169972003, evictionCount=401} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=102, missCount=842, loadSuccessCount=841, loadExceptionCount=0, totalLoadTime=172989598, evictionCount=441} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=480, loadSuccessCount=481, loadExceptionCount=0, totalLoadTime=58927659, evictionCount=81} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=102, missCount=882, loadSuccessCount=881, loadExceptionCount=0, totalLoadTime=176191188, evictionCount=481} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=520, loadSuccessCount=521, loadExceptionCount=0, totalLoadTime=60858503, evictionCount=121} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=103, missCount=922, loadSuccessCount=921, loadExceptionCount=0, totalLoadTime=179407750, evictionCount=521} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=962, loadSuccessCount=961, loadExceptionCount=0, totalLoadTime=182159265, evictionCount=561} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=560, loadSuccessCount=561, loadExceptionCount=0, totalLoadTime=64064501, evictionCount=161} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=1002, loadSuccessCount=1001, loadExceptionCount=0, totalLoadTime=185365639, evictionCount=601} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=1042, loadSuccessCount=1041, loadExceptionCount=0, totalLoadTime=188802371, evictionCount=641} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=600, loadSuccessCount=601, loadExceptionCount=0, totalLoadTime=70147411, evictionCount=201} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=1082, loadSuccessCount=1081, loadExceptionCount=0, totalLoadTime=198861481, evictionCount=681} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=1122, loadSuccessCount=1121, loadExceptionCount=0, totalLoadTime=201665894, evictionCount=721} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=640, loadSuccessCount=641, loadExceptionCount=0, totalLoadTime=71853673, evictionCount=241} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=105, missCount=1162, loadSuccessCount=1161, loadExceptionCount=0, totalLoadTime=204577053, evictionCount=761} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=680, loadSuccessCount=681, loadExceptionCount=0, totalLoadTime=73730205, evictionCount=281} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=106, missCount=1202, loadSuccessCount=1201, loadExceptionCount=0, totalLoadTime=207033852, evictionCount=801} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=109, missCount=1242, loadSuccessCount=1241, loadExceptionCount=0, totalLoadTime=209687599, evictionCount=841} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=720, loadSuccessCount=721, loadExceptionCount=0, totalLoadTime=75469443, evictionCount=321} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=110, missCount=1282, loadSuccessCount=1281, loadExceptionCount=0, totalLoadTime=212527014, evictionCount=881} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/md5-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=0, missCount=760, loadSuccessCount=761, loadExceptionCount=0, totalLoadTime=77228847, evictionCount=361} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=110, missCount=1322, loadSuccessCount=1321, loadExceptionCount=0, totalLoadTime=215164474, evictionCount=921} 
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=114, missCount=1362, loadSuccessCount=1361, loadExceptionCount=0, totalLoadTime=217946437, evictionCount=961} 
+> Task :composeApp:checkDebugAarMetadata FAILED
+FAILURE: Build failed with an exception.
+BUILD FAILED in 1m 15s
 === LAST 150 LINES ===
-Downloading https://services.gradle.org/distributions/gradle-8.11.1-bin.zip
-.............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.9.0/kotlinx-coroutines-core-jvm-1.9.0.pom to /home/runner/.gradle/.tmp/gradle_download10532036668299462898bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-core-jvm/1.9.0/kotlinx-coroutines-core-jvm-1.9.0.module to /home/runner/.gradle/.tmp/gradle_download1514521486309966269bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-jdk8/1.9.0/kotlinx-coroutines-jdk8-1.9.0.pom to /home/runner/.gradle/.tmp/gradle_download2467661368676399439bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-jdk8/1.9.0/kotlinx-coroutines-jdk8-1.9.0.module to /home/runner/.gradle/.tmp/gradle_download1193338153956305700bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-play-services/1.9.0/kotlinx-coroutines-play-services-1.9.0.pom to /home/runner/.gradle/.tmp/gradle_download5952276379106049063bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-play-services/1.9.0/kotlinx-coroutines-play-services-1.9.0.module to /home/runner/.gradle/.tmp/gradle_download14193324582482356105bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-slf4j/1.9.0/kotlinx-coroutines-slf4j-1.9.0.pom to /home/runner/.gradle/.tmp/gradle_download16108623922307696391bin
+Downloading https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-coroutines-slf4j/1.9.0/kotlinx-coroutines-slf4j-1.9.0.module to /home/runner/.gradle/.tmp/gradle_download5435373633846650349bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common-jvm/2.8.7/lifecycle-common-jvm-2.8.7.pom to /home/runner/.gradle/.tmp/gradle_download11527591575448505031bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-common-jvm/2.8.7/lifecycle-common-jvm-2.8.7.module to /home/runner/.gradle/.tmp/gradle_download16712713101120186527bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-compose-android/2.8.7/lifecycle-runtime-compose-android-2.8.7.pom to /home/runner/.gradle/.tmp/gradle_download14156396202818265016bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-compose-android/2.8.7/lifecycle-runtime-compose-android-2.8.7.module to /home/runner/.gradle/.tmp/gradle_download1213726660187393356bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7.pom to /home/runner/.gradle/.tmp/gradle_download4352184117986467773bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7.module to /home/runner/.gradle/.tmp/gradle_download4115799244028955949bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-android/2.8.7/lifecycle-viewmodel-android-2.8.7.pom to /home/runner/.gradle/.tmp/gradle_download2070848555520461479bin
+Cache entries evicted. In-memory cache of /home/runner/work/VideoAvatarAI/VideoAvatarAI/.gradle/8.11.1/checksums/sha1-checksums.bin: Size{400} MaxSize{400}, CacheStats{hitCount=114, missCount=1362, loadSuccessCount=1361, loadExceptionCount=0, totalLoadTime=217946437, evictionCount=961} 
+Performance may suffer from in-memory cache misses. Increase max heap size of Gradle build process to reduce cache misses.
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-android/2.8.7/lifecycle-viewmodel-android-2.8.7.module to /home/runner/.gradle/.tmp/gradle_download15061957793275997444bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-compose-android/2.8.7/lifecycle-viewmodel-compose-android-2.8.7.pom to /home/runner/.gradle/.tmp/gradle_download15869362302163874615bin
+Downloading https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-viewmodel-compose-android/2.8.7/lifecycle-viewmodel-compose-android-2.8.7.module to /home/runner/.gradle/.tmp/gradle_download14419007585496100364bin
 
-Welcome to Gradle 8.11.1!
-
-Here are the highlights of this release:
- - Parallel load and store for Configuration Cache
- - Java compilation errors at the end of the build output
- - Consolidated report for warnings and deprecations
-
-For more details see https://docs.gradle.org/8.11.1/release-notes.html
-
-Starting a Gradle Daemon (subsequent builds will be faster)
-Type-safe project accessors is an incubating feature.
-
-> Configure project :composeApp
-w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
-iosArm64, iosSimulatorArm64
-To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
-
-
-> Task :help
-
-Welcome to Gradle 8.11.1.
-
-To run a build, run gradlew <task> ...
-
-To see a list of available tasks, run gradlew tasks
-
-To see more detail about a task, run gradlew help --task <task>
-
-To see a list of command-line options, run gradlew --help
-
-For more detail on using Gradle, see https://docs.gradle.org/8.11.1/userguide/command_line_interface.html
-
-For troubleshooting, visit https://help.gradle.org
+> Task :composeApp:checkDebugAarMetadata FAILED
 [Incubating] Problems report is available at: file:///home/runner/work/VideoAvatarAI/VideoAvatarAI/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':composeApp:checkDebugAarMetadata'.
+> Configuration `:composeApp:debugRuntimeClasspath` contains AndroidX dependencies, but the `android.useAndroidX` property is not enabled, which may cause runtime issues.
+  Set `android.useAndroidX=true` in the `gradle.properties` file and retry.
+  The following AndroidX dependencies are detected:
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling-preview:1.7.1 -> androidx.compose.ui:ui-tooling-preview:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling-preview:1.7.1 -> androidx.compose.ui:ui-tooling-preview:1.7.5 -> androidx.compose.ui:ui-tooling-preview-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.annotation:annotation:1.9.1
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.annotation:annotation:1.9.1 -> androidx.annotation:annotation-jvm:1.9.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.runtime:runtime:1.7.1 -> androidx.compose.runtime:runtime:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.runtime:runtime:1.7.1 -> androidx.compose.runtime:runtime:1.7.5 -> androidx.compose.runtime:runtime-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01 -> androidx.annotation:annotation-experimental:1.4.1
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.collection:collection:1.4.4
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.collection:collection:1.4.4 -> androidx.collection:collection-jvm:1.4.4
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-common:2.8.0-alpha10 -> androidx.navigation:navigation-common:2.8.0-rc01 -> androidx.collection:collection-ktx:1.4.4
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.core:core:1.13.1
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-common:21.0.0 -> androidx.concurrent:concurrent-futures:1.1.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.vectordrawable:vectordrawable-animated:1.1.0 -> androidx.interpolator:interpolator:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.lifecycle:lifecycle-runtime:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.lifecycle:lifecycle-runtime:2.8.7 -> androidx.lifecycle:lifecycle-runtime-android:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-runtime:2.8.4 -> androidx.arch.core:core-common:2.2.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.2 -> androidx.lifecycle:lifecycle-livedata-core:2.8.7 -> androidx.arch.core:core-runtime:2.2.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-common:2.8.0-alpha10 -> androidx.navigation:navigation-common:2.8.0-rc01 -> androidx.lifecycle:lifecycle-common:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-common:2.8.0-alpha10 -> androidx.navigation:navigation-common:2.8.0-rc01 -> androidx.lifecycle:lifecycle-common:2.8.7 -> androidx.lifecycle:lifecycle-common-jvm:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.lifecycle:lifecycle-common-java8:2.8.7
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0 -> androidx.loader:loader:1.0.0 -> androidx.lifecycle:lifecycle-livedata:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.2 -> androidx.lifecycle:lifecycle-livedata-core:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.lifecycle:lifecycle-viewmodel:2.8.7 -> androidx.lifecycle:lifecycle-viewmodel-android:2.8.7 -> androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.emoji2:emoji2:1.3.0 -> androidx.lifecycle:lifecycle-process:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.emoji2:emoji2:1.3.0 -> androidx.startup:startup-runtime:1.1.1
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.activity:activity:1.9.3 -> androidx.tracing:tracing:1.0.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.8.4 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.8.4 -> androidx.lifecycle:lifecycle-runtime-compose:2.8.7 -> androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01 -> androidx.lifecycle:lifecycle-runtime-ktx:2.8.7 -> androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.lifecycle:lifecycle-viewmodel:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.lifecycle:lifecycle-viewmodel:2.8.7 -> androidx.lifecycle:lifecycle-viewmodel-android:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2 -> androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2 -> androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7 -> androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui:1.7.1 -> androidx.compose.ui:ui:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui:1.7.1 -> androidx.compose.ui:ui:1.7.5 -> androidx.compose.ui:ui-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.activity:activity-ktx:1.9.3
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.activity:activity:1.9.3
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.2 -> androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.core:core-ktx:1.13.1
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.savedstate:savedstate:1.2.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-common:2.8.0-alpha10 -> androidx.navigation:navigation-common:2.8.0-rc01 -> androidx.savedstate:savedstate-ktx:1.2.1
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.profileinstaller:profileinstaller:1.4.1
+  :composeApp:debugRuntimeClasspath -> androidx.activity:activity-compose:1.9.3
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.runtime:runtime-saveable:1.7.1 -> androidx.compose.runtime:runtime-saveable:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.runtime:runtime-saveable:1.7.1 -> androidx.compose.runtime:runtime-saveable:1.7.5 -> androidx.compose.runtime:runtime-saveable-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui:1.7.1 -> androidx.compose.ui:ui:1.7.5 -> androidx.compose.ui:ui-android:1.7.5 -> androidx.autofill:autofill:1.0.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation:1.7.1 -> org.jetbrains.compose.ui:ui-geometry:1.7.1 -> androidx.compose.ui:ui-geometry:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation:1.7.1 -> org.jetbrains.compose.ui:ui-geometry:1.7.1 -> androidx.compose.ui:ui-geometry:1.7.5 -> androidx.compose.ui:ui-geometry-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> androidx.compose.material3:material3:1.3.1 -> androidx.compose.material3:material3-android:1.3.1 -> androidx.compose.ui:ui-util:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> androidx.compose.material3:material3:1.3.1 -> androidx.compose.material3:material3-android:1.3.1 -> androidx.compose.ui:ui-util:1.7.5 -> androidx.compose.ui:ui-util-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.ui:ui-graphics:1.7.1 -> androidx.compose.ui:ui-graphics:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.ui:ui-graphics:1.7.1 -> androidx.compose.ui:ui-graphics:1.7.5 -> androidx.compose.ui:ui-graphics-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation-core:1.7.1 -> org.jetbrains.compose.ui:ui-unit:1.7.1 -> androidx.compose.ui:ui-unit:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation-core:1.7.1 -> org.jetbrains.compose.ui:ui-unit:1.7.1 -> androidx.compose.ui:ui-unit:1.7.5 -> androidx.compose.ui:ui-unit-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.ui:ui-text:1.7.1 -> androidx.compose.ui:ui-text:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.ui:ui-text:1.7.1 -> androidx.compose.ui:ui-text:1.7.5 -> androidx.compose.ui:ui-text-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.emoji2:emoji2:1.3.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.emoji2:emoji2-views-helper:1.3.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling:1.7.1 -> androidx.compose.ui:ui-tooling:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling:1.7.1 -> androidx.compose.ui:ui-tooling:1.7.5 -> androidx.compose.ui:ui-tooling-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation:1.7.1 -> androidx.compose.animation:animation:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation:1.7.1 -> androidx.compose.animation:animation:1.7.5 -> androidx.compose.animation:animation-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation-core:1.7.1 -> androidx.compose.animation:animation-core:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.animation:animation-core:1.7.1 -> androidx.compose.animation:animation-core:1.7.5 -> androidx.compose.animation:animation-core-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.foundation:foundation-layout:1.7.1 -> androidx.compose.foundation:foundation-layout:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.compose.foundation:foundation-layout:1.7.1 -> androidx.compose.foundation:foundation-layout:1.7.5 -> androidx.compose.foundation:foundation-layout-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.foundation:foundation:1.7.1 -> androidx.compose.foundation:foundation:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.foundation:foundation:1.7.1 -> androidx.compose.foundation:foundation:1.7.5 -> androidx.compose.foundation:foundation-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling:1.7.1 -> androidx.compose.ui:ui-tooling:1.7.5 -> androidx.compose.ui:ui-tooling-android:1.7.5 -> androidx.compose.material:material:1.0.0
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.material:material-icons-core:1.7.1 -> androidx.compose.material:material-icons-core:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.material:material-icons-core:1.7.1 -> androidx.compose.material:material-icons-core:1.7.5 -> androidx.compose.material:material-icons-core-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.material:material-ripple:1.7.1 -> androidx.compose.material:material-ripple:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.material:material-ripple:1.7.1 -> androidx.compose.material:material-ripple:1.7.5 -> androidx.compose.material:material-ripple-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling:1.7.1 -> org.jetbrains.compose.ui:ui-tooling-data:1.7.1 -> androidx.compose.ui:ui-tooling-data:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui-tooling:1.7.1 -> org.jetbrains.compose.ui:ui-tooling-data:1.7.1 -> androidx.compose.ui:ui-tooling-data:1.7.5 -> androidx.compose.ui:ui-tooling-data-android:1.7.5
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> org.jetbrains.compose.ui:ui-graphics:1.7.1 -> androidx.compose.ui:ui-graphics:1.7.5 -> androidx.compose.ui:ui-graphics-android:1.7.5 -> androidx.graphics:graphics-path:1.0.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.ui:ui:1.7.1 -> androidx.compose.ui:ui:1.7.5 -> androidx.compose.ui:ui-android:1.7.5 -> androidx.customview:customview-poolingcontainer:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.core:core:1.13.1 -> androidx.versionedparcelable:versionedparcelable:1.1.1
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.fragment:fragment:1.8.3
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0 -> androidx.loader:loader:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.fragment:fragment:1.8.3 -> androidx.viewpager:viewpager:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.drawerlayout:drawerlayout:1.0.0 -> androidx.customview:customview:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.fragment:fragment-ktx:1.8.3
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.vectordrawable:vectordrawable:1.1.0
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.appcompat:appcompat-resources:1.7.0 -> androidx.vectordrawable:vectordrawable-animated:1.1.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.cursoradapter:cursoradapter:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.drawerlayout:drawerlayout:1.0.0
+  :composeApp:debugRuntimeClasspath -> io.insert-koin:koin-android:4.0.0 -> androidx.appcompat:appcompat:1.7.0 -> androidx.resourceinspection:resourceinspection-annotation:1.0.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> androidx.compose.material3:material3:1.3.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.compose.material3:material3:1.7.1 -> androidx.compose.material3:material3:1.3.1 -> androidx.compose.material3:material3-android:1.3.1
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> androidx.navigation:navigation-compose:2.8.0-rc01
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01 -> androidx.navigation:navigation-common-ktx:2.8.0-rc01 -> androidx.navigation:navigation-runtime-ktx:2.8.0-rc01
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01 -> androidx.navigation:navigation-common-ktx:2.8.0-rc01
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-common:2.8.0-alpha10 -> androidx.navigation:navigation-common:2.8.0-rc01
+  :composeApp:debugRuntimeClasspath -> org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10 -> org.jetbrains.androidx.navigation:navigation-runtime:2.8.0-alpha10 -> androidx.navigation:navigation-runtime:2.8.0-rc01
+  :composeApp:debugRuntimeClasspath -> io.coil-kt.coil3:coil-compose:3.0.4 -> io.coil-kt.coil3:coil-compose-android:3.0.4 -> io.coil-kt.coil3:coil:3.0.4 -> io.coil-kt.coil3:coil-android:3.0.4 -> io.coil-kt.coil3:coil-core:3.0.4 -> io.coil-kt.coil3:coil-core-android:3.0.4 -> androidx.exifinterface:exifinterface:1.3.7
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0 -> androidx.documentfile:documentfile:1.0.0
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0 -> androidx.localbroadcastmanager:localbroadcastmanager:1.0.0
+  :composeApp:debugRuntimeClasspath -> com.google.firebase:firebase-bom:33.13.0 -> com.google.firebase:firebase-messaging:24.1.1 -> com.google.android.gms:play-services-stats:17.0.2 -> androidx.legacy:legacy-support-core-utils:1.0.0 -> androidx.print:print:1.0.0
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
 
 Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
 
@@ -45,7 +207,7 @@ You can use '--warning-mode all' to show the individual deprecation warnings and
 
 For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
 
-BUILD SUCCESSFUL in 56s
-1 actionable task: 1 executed
+BUILD FAILED in 1m 15s
+5 actionable tasks: 5 executed
 === APK FILES ===
 (none)
