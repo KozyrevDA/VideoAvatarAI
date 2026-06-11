@@ -5,66 +5,105 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
-      - uses: android-actions/setup-android@v3
-      - uses: actions/cache@v4
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.konan
-          key: gradle-kmp-${{ hashFiles('**/*.gradle.kts','**/libs.versions.toml') }}
-          restore-keys: gradle-kmp-
+          key: gradle-${{ hashFiles('**/*.gradle.kts','**/libs.versions.toml') }}
+          restore-keys: gradle-
 
-      - name: Setup
-        run: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          chmod +x gradlew
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
-      - name: Build
-        run: |
-          # Запускаем сборку, захватываем вывод
-          ./gradlew :composeApp:assembleDebug \
-            --no-daemon --stacktrace --no-build-cache --rerun-tasks \
-            -Dorg.gradle.configuration-cache=false \
-            2>&1 | tee /tmp/build.log
-          GRADLE_RC=${PIPESTATUS[0]}
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
-          # Пишем критичные строки через ::notice:: — попадут в аннотации API
-          echo "::notice title=Gradle Exit Code::$GRADLE_RC"
-
-          APKS=$(find . -name "*.apk" 2>/dev/null | tr '\n' ' ')
-          echo "::notice title=APK Files::${APKS:-NONE FOUND}"
-
-          OUTPUTS=$(find composeApp/build/outputs -type f 2>/dev/null | head -10 | tr '\n' '|')
-          echo "::notice title=Build Outputs::${OUTPUTS:-no outputs dir}"
-
-          # Последние 30 строк лога
-          TAIL=$(tail -30 /tmp/build.log | tr '\n' '~')
-          echo "::notice title=Build Log Tail::$TAIL"
-
-          exit $GRADLE_RC
+      - name: Build Debug APK
+        run: ./gradlew :composeApp:assembleDebug --stacktrace --no-daemon
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+
+      - name: Locate and rename APK
+        run: |
+          APK=$(find composeApp/build/outputs/apk -name "*.apk" | head -1)
+          echo "Found: $APK ($(du -h "$APK" | cut -f1))"
+          cp "$APK" NeurosetVideo-debug.apk
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: NeurosetVideo-debug
-          path: composeApp/build/outputs/apk/**/*.apk
-          if-no-files-found: error
+          path: NeurosetVideo-debug.apk
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Нейросеть Видео — Debug APK" >> $GITHUB_STEP_SUMMARY
+          if [ -f NeurosetVideo-debug.apk ]; then
+            echo "✅ **NeurosetVideo-debug.apk** — $(du -h NeurosetVideo-debug.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
+            echo "⬇️ Скачать → раздел **Artifacts** внизу страницы" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ APK не найден" >> $GITHUB_STEP_SUMMARY
+            find composeApp/build -name "*.apk" 2>/dev/null >> $GITHUB_STEP_SUMMARY || true
+          fi
+
+      - name: Decode keystore
+        id: ks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            mkdir -p keystore
+            echo "$KEYSTORE_BASE64" | base64 --decode > keystore/release.keystore
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Release APK
+        if: steps.ks.outputs.found == 'true'
+        run: ./gradlew :composeApp:assembleRelease --stacktrace --no-daemon
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          KEYSTORE_PATH: ${{ github.workspace }}/keystore/release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload Release APK
+        if: steps.ks.outputs.found == 'true'
+        run: |
+          APK=$(find composeApp/build/outputs/apk/release -name "*.apk" 2>/dev/null | head -1)
+          [ -n "$APK" ] && cp "$APK" NeurosetVideo-release.apk || echo "No release APK"
+
+      - name: Upload Release artifact
+        if: steps.ks.outputs.found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: NeurosetVideo-release
+          path: NeurosetVideo-release.apk
+          if-no-files-found: warn
           retention-days: 30
