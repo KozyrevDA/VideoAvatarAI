@@ -43,13 +43,15 @@ jobs:
           {
             echo "EXIT: $BUILD_EXIT"
             echo "=== WHAT WENT WRONG ==="
-            grep -A 20 "What went wrong" /tmp/build.log || echo "(not found)"
+            grep -A 10 "What went wrong" /tmp/build.log || echo "(not found)"
+            echo "=== KOTLIN ERRORS (e:) ==="
+            grep "^e: " /tmp/build.log || echo "(none)"
             echo "=== TASK FAILURES ==="
-            grep -E "FAILED|Exception|error:|Error:" /tmp/build.log | grep -v "Cache entries" || echo "(none)"
-            echo "=== LAST 200 LINES ==="
-            tail -200 /tmp/build.log
+            grep -E "FAILED|error:" /tmp/build.log | grep -v "Cache entries" | grep -v "^e: " | head -30 || echo "(none)"
+            echo "=== LAST 150 LINES ==="
+            tail -150 /tmp/build.log
             echo "=== APKs ==="
-            find . -name "*.apk" 2>/dev/null | grep -v build-tools | grep -v platforms | grep -v emulator || echo "(none)"
+            find . -name "*.apk" 2>/dev/null | grep -v build-tools | grep -v platforms || echo "(none)"
           } > build-output/last-log.txt
           git add build-output/
           git commit -m "ci: log $BUILD_EXIT" --allow-empty || true
