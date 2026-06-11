@@ -139,10 +139,6 @@ android {
         // Desugaring
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
-        // RuStore Pay
-        implementation(platform("ru.rustore.sdk:bom:2025.08.01"))
-        implementation("ru.rustore.sdk:pay")
-
         // Google Play Billing
         implementation("com.android.billingclient:billing-ktx:7.1.1")
     }
