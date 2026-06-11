@@ -5,11 +5,7 @@ import android.content.Context
 import com.android.billingclient.api.*
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.nla.videoavataraii.app.AndroidApp
-import ru.rustore.sdk.pay.RuStorePayClient
-import ru.rustore.sdk.pay.model.purchase.request.PurchaseParams
 import kotlin.coroutines.resume
-
-// ─── Common types ─────────────────────────────────────────────────────────────
 
 sealed class BillingResult {
     data class Success(val purchaseToken: String, val productId: String) : BillingResult()
@@ -22,52 +18,19 @@ interface BillingProvider {
     suspend fun isAvailable(): Boolean
 }
 
-// ─── RuStore Pay SDK ──────────────────────────────────────────────────────────
-
-class RuStoreBillingProvider : BillingProvider {
-
-    override suspend fun isAvailable(): Boolean =
-        suspendCancellableCoroutine { cont ->
-            RuStorePayClient.instance
-                .checkPurchasesAvailability()
-                .addOnSuccessListener { result -> cont.resume(result.isAvailable) }
-                .addOnFailureListener { cont.resume(false) }
-        }
-
-    override suspend fun purchase(activity: Activity, productId: String): BillingResult =
-        suspendCancellableCoroutine { cont ->
-            RuStorePayClient.instance
-                .purchaseProduct(PurchaseParams(productId = productId))
-                .addOnSuccessListener { result ->
-                    val token = result.purchaseId ?: result.subscriptionToken ?: ""
-                    if (token.isNotBlank())
-                        cont.resume(BillingResult.Success(token, productId))
-                    else
-                        cont.resume(BillingResult.Cancelled)
-                }
-                .addOnFailureListener { e ->
-                    cont.resume(BillingResult.Error(e.message ?: "RuStore ошибка"))
-                }
-        }
-}
-
-// ─── Google Play Billing v8 ───────────────────────────────────────────────────
+private typealias GPBillingResult = com.android.billingclient.api.BillingResult
 
 class GooglePlayBillingProvider : BillingProvider {
 
     private val context: Context get() = AndroidApp.instance
 
-    override suspend fun isAvailable(): Boolean = try {
-        connectClient().isReady
-    } catch (e: Exception) { false }
+    override suspend fun isAvailable(): Boolean = try { connectClient().isReady } catch (_: Exception) { false }
 
     override suspend fun purchase(activity: Activity, productId: String): BillingResult {
         return try {
             val productType = if (productId.startsWith("sub_")) ProductType.SUBS else ProductType.INAPP
-            val details = queryDetails(productId, productType)
-                ?: return BillingResult.Error("Продукт $productId не найден")
-            val flowParams = buildFlow(details, productType)
-                ?: return BillingResult.Error("Ошибка параметров")
+            val details = queryDetails(productId, productType) ?: return BillingResult.Error("Product not found")
+            val flowParams = buildFlow(details, productType) ?: return BillingResult.Error("Build flow error")
 
             suspendCancellableCoroutine { cont ->
                 val client = BillingClient.newBuilder(context)
@@ -84,39 +47,28 @@ class GooglePlayBillingProvider : BillingProvider {
                     .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
                     .build()
                 client.startConnection(object : BillingClientStateListener {
-                    override fun onBillingSetupFinished(r: BillingResult2) {
-                        client.launchBillingFlow(activity, flowParams)
-                    }
-                    override fun onBillingServiceDisconnected() {
-                        cont.resume(BillingResult.Error("GP отключился"))
-                    }
+                    override fun onBillingSetupFinished(r: GPBillingResult) { client.launchBillingFlow(activity, flowParams) }
+                    override fun onBillingServiceDisconnected() { cont.resume(BillingResult.Error("GP disconnected")) }
                 })
             }
-        } catch (e: Exception) {
-            BillingResult.Error(e.message ?: "Ошибка Billing")
-        }
+        } catch (e: Exception) { BillingResult.Error(e.message ?: "Billing error") }
     }
 
-    private suspend fun connectClient(): BillingClient =
-        suspendCancellableCoroutine { cont ->
-            val c = BillingClient.newBuilder(context)
-                .setListener { _, _ -> }
-                .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
-                .build()
-            c.startConnection(object : BillingClientStateListener {
-                override fun onBillingSetupFinished(r: BillingResult2) = cont.resume(c)
-                override fun onBillingServiceDisconnected() = cont.resume(c)
-            })
-        }
+    private suspend fun connectClient(): BillingClient = suspendCancellableCoroutine { cont ->
+        val c = BillingClient.newBuilder(context).setListener { _, _ -> }
+            .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()).build()
+        c.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(r: GPBillingResult) = cont.resume(c)
+            override fun onBillingServiceDisconnected() = cont.resume(c)
+        })
+    }
 
     private suspend fun queryDetails(id: String, type: String): ProductDetails? {
         val c = connectClient()
         return suspendCancellableCoroutine { cont ->
-            c.queryProductDetailsAsync(
-                QueryProductDetailsParams.newBuilder()
-                    .setProductList(listOf(QueryProductDetailsParams.Product.newBuilder().setProductId(id).setProductType(type).build()))
-                    .build()
-            ) { _, list -> cont.resume(list.firstOrNull()) }
+            c.queryProductDetailsAsync(QueryProductDetailsParams.newBuilder()
+                .setProductList(listOf(QueryProductDetailsParams.Product.newBuilder().setProductId(id).setProductType(type).build()))
+                .build()) { _, list -> cont.resume(list.firstOrNull()) }
         }
     }
 
@@ -133,6 +85,3 @@ class GooglePlayBillingProvider : BillingProvider {
         }
     }
 }
-
-// Тип-алиас чтобы не конфликтовать с нашим BillingResult
-private typealias BillingResult2 = com.android.billingclient.api.BillingResult
